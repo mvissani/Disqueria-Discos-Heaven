@@ -1,0 +1,145 @@
+/* Container */
+.container {
+    background: aliceblue !important;
+    padding: 12px 12px;
+    border-radius: 15px;
+    width: 400px;
+    margin: 2rem auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Form */
+.nombre-form {
+    text-align: center;
+    color: rgb(22, 22, 110);
+    padding-bottom: 0px;
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 1rem;
+    align-items: center;
+}
+
+.input-group {
+    position: relative;
+}
+
+.input-group input {
+    width: 300px;
+    height: 40px;
+    padding: 5px 5px;
+    border: 2px solid #dadada;
+    background-color: aliceblue;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.input-group input:focus {
+    border-color: #3b82f6;
+}
+
+.input-group label {
+    position: absolute;
+    top: 8px;
+    left: 6px;
+    color: #6b7280;
+    pointer-events: none;
+    transition: 0.3s;
+}
+
+.input-group input:focus + label,
+.input-group input:not(:placeholder-shown) + label {
+    top: -18px;
+    font-size: 0.75rem;
+    color: #3b82f6;
+}
+
+.error {
+    color: #ef4444;
+    font-size: 0.75rem;
+    display: none;
+}
+
+.error.visible {
+    display: block;
+}
+
+button#btnregistro {
+    background: #6de6d8;
+    color: white;
+    font-weight: 700;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+    width: 100px;
+    height: 40px;
+    text-align: center;
+}
+
+button#btnregistro:hover {
+    background: #008284;
+    transform: translateY(-2px);
+}
+
+/* Éxito */
+.success {
+    color: #16a34a;
+    font-weight: 700;
+    text-align: center;
+    display: none;
+}
+
+.success.visible {
+    display: block;
+}
+
+/* CD animado */
+.cd-container {
+  position: relative;
+}
+
+#cd-animation {
+  width: 120px;
+  height: 120px;
+  animation: spin 3s linear infinite;
+  transition: filter 0.5s, transform 0.5s;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Cuando el formulario está completo */
+.cd-container.completed #cd-animation {
+  animation-play-state: paused;
+  filter: drop-shadow(0 0 25px #00f7ff) brightness(1.3);
+  transform: scale(1.2);
+}
+
+/* Destellos */
+.cd-container.completed::after {
+  content: "";
+  position: absolute;
+  top: 31px;
+  left: 36px;
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  box-shadow: 0 0 20px #39b6f5, 0 0 32px #39b6f5, 0 0 60px #00f7ff;
+  animation: shine 1s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+@keyframes shine {
+  from { opacity: 0.5; transform: scale(1); }
+  to { opacity: 1; transform: scale(1.1); }
+}

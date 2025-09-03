@@ -1,0 +1,88 @@
+.grid-populares {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); 
+  gap: 20px;
+  padding: 20px;
+  justify-items: center;
+}
+
+/* Tarjeta de Disco Individual */
+.card-popular {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  padding: 15px;
+  text-align: center;
+  width: 260px;
+  height: 460px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Portada del Disco */
+.card-popular img {
+  width: 200px;
+  height: 200px;
+  border-radius: 8px;
+}
+
+/* Contenedor de detalles */
+.card-popular .detalles {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Boton Comprar */
+button {
+  display: flex;
+  align-items: center;
+  justify-content: center; 
+}
+
+.comprar {
+  border-radius: 6px;
+  border: none;
+  background-color: #00b3ff;
+  color: #fff;
+  font-size: 1rem;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  font-weight: bold;
+  padding: 10px 28px;
+  box-shadow: 0 2px 8px rgba(30,215,96,0.08);
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+  display: block;
+  text-align: center;
+  margin-top: 10px; 
+}
+
+#comprar:hover, .comprar:hover {
+  background-color: #17b957;
+  box-shadow: 0 4px 16px rgba(30,215,96,0.18);
+  transform: translateY(-2px) scale(1.04);
+}
+
+/* Mensaje de Confirmacion */
+.mensaje-flotante {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #4caf50;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 8px;
+  box-shadow: 0px 3px 10px rgba(0,0,0,0.2);
+  font-size: 14px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+  z-index: 9999;
+}
+
+.mensaje-flotante.visible {
+  opacity: 1;
+}

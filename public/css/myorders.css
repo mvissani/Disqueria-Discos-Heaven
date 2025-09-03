@@ -1,0 +1,73 @@
+/* Main */
+main {
+  flex: 1 !important;
+  background-color: aliceblue !important;
+  margin: 10px 10px;
+  padding: 10px 10px;
+  border-radius: 10px;
+}
+
+.title {
+  margin-top: 10px;
+  margin-bottom: 0px;
+  text-align: center;
+  color: rgb(74, 123, 167);
+}
+
+button {
+  padding: 10px 15px;
+  margin: 5px 0;
+  cursor: pointer;
+}
+
+.carrito {
+  display: none;
+  flex-direction: column;
+  border: 1px solid #ccc;
+  padding: 15px;
+  margin-top: 10px;
+  background: #fafafa;
+}
+
+.item-carrito {
+  border-bottom: 1px solid #ddd;
+  padding: 10px 0;
+}
+
+.compra {
+  margin: 10px 10px;
+  padding-left: 4px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.compra-card {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  background-color: #fff;
+}
+
+.compra-card h3 {
+  margin-top: 0;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.compra-card .total {
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #2c3e50;
+}
+
+.compra-card ul {
+  padding-left: 20px;
+  margin: 0;
+}
+
+.compra-card li {
+  margin-bottom: 5px;
+}

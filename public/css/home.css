@@ -1,0 +1,182 @@
+main {
+  align-content: center;
+}
+
+/* Carrusel */
+
+.carrusel-centrado {
+  display: flex;
+  align-items: center;
+  margin: 0px;
+}
+
+.carrete-wrapper {
+  overflow-x: hidden;
+  overflow-y: hidden;
+  width: 100%;
+  scroll-behavior: smooth;
+}
+
+.carrete {
+  display: flex;
+  gap: 30px; 
+}
+
+.disco {
+  background-color: transparent !important;
+  display: flex;
+  flex-direction: column;
+  width: 220px;
+  height: 220px;
+  cursor: pointer;
+  transition: all 0.3s;
+  overflow: visible;
+  position: relative;
+}
+
+.disco img {
+  width: 220px;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 10px;
+  transition: transform 0.3s;
+}
+
+.disco-info {
+  position: absolute;
+  top: 55%; 
+  left: 50%;
+  width: 232px; 
+  height: 234px; 
+  background: rgba(0,0,0,0.6);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  font-size: 14px;
+  text-align: center;
+  opacity: 0;
+  border-radius: 10px; 
+  transform: translate(-50%, -50%);
+}
+
+.disco:hover img {
+ transform: scale(1.05);
+}
+
+.disco:hover .disco-info {
+  opacity: 1;
+  z-index: 2;
+}
+
+/* Flechas */
+.flecha {
+  background: transparent;
+  border: none;
+  color: rgb(21, 136, 146);
+  font-size: 30px;
+  cursor: pointer;
+  padding: 10px;
+  z-index: 5;
+  transition: background 0.3s;
+}
+
+/* Discos */
+.disco {
+  width: 220px;
+  max-height: 220px;
+  box-sizing: border-box;
+  overflow: visible;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  background: #fffef0;
+  border-radius: 18px;
+  transition: box-shadow 0.3s, transform 0.3s, background 0.3s, min-height 0.3s;
+  box-shadow: none;
+  cursor: pointer;
+  position: relative;
+  margin: 10px 0;
+  padding: 10px 6px 12px 6px;
+}
+
+.disco.activo {
+  box-shadow: 0 8px 32px 0 rgba(0,0,0,0.18), 0 4px 24px rgba(0,0,0,0.10);
+  background: #fffbe6;
+  border: 2px solid #e0e0e0;
+  transform: scale(1.04) translateY(-4px);
+  filter: brightness(1.07) saturate(1.05);
+  transition: all 0.3s;
+}
+
+.disco .titulo {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 3px 0 2px 0;
+  text-align: center;
+  word-break: break-word;
+  white-space: normal;
+  min-height: 2em;
+  max-width: 95%;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Times New Roman"; 
+}
+
+.disco .artista {
+  font-size: 16px;
+  margin: 0 0 6px 0;
+  text-align: center;
+  word-break: break-word;
+  white-space: normal;
+  max-width: 95%;
+  font-family: "Times New Roman"; 
+}
+
+
+/* Comprar */
+
+.comprar {
+  border: none;
+  color: #fff;
+  background-color: transparent;
+  font-size: 1rem;
+  font-weight: bold;
+  box-shadow: 0 2px 8px rgba(30,215,96,0.08);
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+  display: block;
+  text-align: center;
+}
+
+.comprar:hover {
+  color: #17b957;
+  box-shadow: 0 4px 16px rgba(30,215,96,0.18);
+  transform: translateY(-2px) scale(1.04);
+}
+
+/* Mensaje de Confirmacion */
+.mensaje-flotante {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #4caf50;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 8px;
+  box-shadow: 0px 3px 10px rgba(0,0,0,0.2);
+  font-size: 14px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+  z-index: 9999;
+}
+
+.mensaje-flotante.visible {
+  opacity: 1;
+}

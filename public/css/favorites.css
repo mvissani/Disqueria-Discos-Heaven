@@ -1,0 +1,130 @@
+/* Main */
+main {
+  flex: 1 !important;
+  background-color: aliceblue !important;
+  margin: 10px 10px;
+  padding: 10px 10px;
+  border-radius: 10px;
+}
+
+/* Contenedor de favoritos */
+#contenedor-favoritos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  background-color: aliceblue;
+  align-items: center;
+}
+
+.title {
+  margin-top: 10px;
+  margin-bottom: 0px;
+  text-align: center;
+  color: rgb(74, 123, 167);
+}
+
+/* Card de disco favorito */
+.disco {
+  width: 220px;
+  height: 300px;
+  box-sizing: border-box;
+  overflow: visible;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  background:  #fff;
+  border-radius: 18px;
+  transition: box-shadow 0.3s, transform 0.3s, background 0.3s, min-height 0.3s;
+  box-shadow: none;
+  cursor: pointer;
+  position: relative;
+}
+
+.disco:hover {
+  transform: scale(1.04); 
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.disco.activo {
+  transform: scale(1.04) translateY(-4px);
+  transition: transform 0.3s, box-shadow 0.3s;
+  outline: none !important;   
+  border: none !important;    
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15); 
+  background: #fff; 
+}
+
+/* Portada */
+.disco .portada {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin: 8px 0px;
+}
+
+/* Título y artista */
+.disco .titulo {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 4px 0px;
+  text-align: center;
+  word-break: break-word;
+  white-space: normal;
+}
+
+.disco .artista {
+  font-size: 15px;
+  color: #555;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+/* Botón de favorito */
+.toggle-fav {
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  margin-top: 2px;
+  color: #ffdd31;
+  transition: color 0.2s;
+}
+
+.toggle-fav:hover {
+  color: #898989;
+}
+
+/* Contenedor de favoritos en grid */
+.contenido {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  justify-content: center;
+  margin-top: 24px;
+}
+
+/* Mensaje flotante (ya lo tenías en products.js) */
+.mensaje-flotante {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #222;
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-size: 16px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+  z-index: 9999;
+}
+
+.mensaje-flotante.visible {
+  opacity: 1;
+  pointer-events: auto;
+}

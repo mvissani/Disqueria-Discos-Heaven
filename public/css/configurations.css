@@ -1,0 +1,79 @@
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.title {
+    text-align: center;
+    margin-top: 12px;
+    color: #002c5b;
+}
+
+.config-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: aliceblue !important;
+    width: 480px;
+    height: 340px;
+    border-radius: 10px;
+    gap: 10px;
+}
+
+input {
+    border-radius: 10px;
+    width: 240px;
+    height: 30px;
+    padding-left: 2px;
+    background-color: aliceblue;
+}
+
+input:hover {
+    border: 1.6px solid darkslateblue !important;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}
+
+button#actualizar {
+    width: 90px;
+    height: 30px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.form input,
+.form button {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.form button {
+  background: #134e97;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+  display: flex;            
+  align-items: center;
+  justify-content: center;
+}
+
+.form button:hover {
+  background: #4d6395;
+}
+
+#mensajeExito {
+    text-align: center;
+    display: none;
+}
+
+
+
+

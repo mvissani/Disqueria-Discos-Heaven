@@ -1,0 +1,28 @@
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.title {
+    color: #134e97;
+}
+
+h3 {
+    color:rgb(58, 149, 150);
+}
+
+.help-content {
+    background-color: aliceblue !important;
+    width: 1050px;
+    display: flex;
+    border-radius: 10px;
+    flex-direction: column;
+    text-align: center;
+    height: 315px;
+    padding: 6px 2px;
+}
+
+.link {
+    padding-left: 0px !important;
+}

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+  <!-- Icono -->
+  <link rel="icon" href="/img/discos-heaven-logo.png">
+  <!-- Viewport -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Nombre de la Pagina -->
+  <title> Discos Heaven </title>
+  <!-- Hojas de Estilo -->
+  <link rel="stylesheet" href="/css/general.css">
+  <link rel="stylesheet" href="/css/recommendations.css">
+  <link rel="stylesheet" href="/css/cart.css">
+  <!-- Iconos -->
+  <script src="https://kit.fontawesome.com/fd9bb0cd18.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <!-- Header Escritorio -->
+  <header class="desktop-header">
+    <div class="header-inner">
+      <!-- Menu -->
+      <nav class="menu-combinado">
+        <!-- Menu Izquierdo -->
+        <div class="menu-left">
+          <div class="submenu">
+            <a href="/products">
+              <i class="fa-solid fa-music"></i>
+              <span class="texto">Productos</span>
+            </a>
+            <!-- Subopciones -->
+            <div class="dropdown">
+              <a href="/sales">Ofertas</a>
+              <a href="/popular">Populares</a>
+              <a href="/recommendations">Recomendaciones</a>
+            </div>
+          </div>
+          <div class="submenu">
+            <a href="/about-us">
+              <i class="fa-solid fa-circle-info"></i>
+              <span class="texto">Sobre Nosotros</span>
+            </a>
+            <!-- Subopciones -->
+            <div class="dropdown">
+              <a href="/help">Ayuda</a>
+            </div>
+          </div>
+        </div>
+        <!-- Fin Menu Izquierdo -->
+        <!-- Logo -->
+        <div class="logoPrincipal">
+          <a href="/"><img src="/img/discosheaven.gif" alt="DiscosHeaven" class="logo"></a>
+        </div>
+        <!-- Fin Logo -->
+        <!-- Menu Derecho -->
+        <div class="menu-right">
+          <div class="submenu">
+            <a>
+              <i class="fa-solid fa-user"></i>
+              <span class="texto">Mi Cuenta</span>
+            </a>
+            <!-- Subopciones -->
+            <div class="dropdown">
+              <a href="/log-in" class="iniciar-sesion">Iniciar Sesión</a>
+              <a href="/register" class="registrarme">Registrarme</a>
+              <a href="/configurations" class="configuraciones">Configuraciones</a>
+            </div>
+          </div>
+          <div class="submenu">
+            <a id="carritoBtn" class="carrito-link">
+              <i class="fa-solid fa-cart-shopping"></i>
+              <span class="texto">Mi Carrito</span>
+              <span id="carritoContador" class="carrito-contador"></span>
+            </a>
+            <!-- Subopciones -->
+            <div class="dropdown">
+              <a href="/my-orders" class="mis-compras">Mis Compras</a>
+              <a href="/my-favorites" class="mis-favoritos">Mis Favoritos</a>
+            </div>
+          </div>
+          <div id="carrito" class="carrito">
+            <div class="contenidoCarrito">
+              <div id="carritoSuperior">
+                <a id="tituloCarrito">MI CARRITO</a>
+                <button id="cerrarCarrito"><i class="fa-solid fa-xmark"></i></button>
+              </div>
+              <div id="carritoItems"></div>
+              <div id="subtotalCarrito"></div>
+            </div>
+          </div>
+        </div>
+        <!-- Fin Menu Derecho -->
+      </nav>
+    </div>
+  </header>
+
+  <!-- Header Movil -->
+  <header class="mobile-header">
+    <div class="header-inner">
+      <!-- Boton Hamburguesa -->
+      <button id="menuToggle" class="menu-toggle">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+      <!-- Logo -->
+      <div class="logo-container">
+        <a href="/"><img src="/img/discos-heaven-logo.png" alt="logo" class="logo"></a>
+      </div>   
+      <!-- Menu Lateral -->
+      <nav class="menuMobile">
+        <!-- Boton Cerrar -->
+        <button id="menuClose" class="menu-close">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+        <!-- Opciones Menu -->
+        <a href="/products">
+          <i class="fa-solid fa-music"></i>
+          <span class="texto">Productos</span>
+        </a>
+        <a href="/sales">
+          <i class="fa-solid fa-bolt"></i>
+          <span class="texto">Ofertas</span>
+        </a>
+        <a href="/recommendations">
+          <i class="fa-solid fa-star"></i>
+          <span class="texto">Recomendaciones</span>
+        </a>
+        <a href="/popular">
+          <i class="fa-solid fa-list-ol"></i>
+          <span class="texto">Populares</span>
+        </a>
+        <a href="/about-us">
+          <i class="fa-solid fa-circle-info"></i>
+          <span class="texto">Sobre Nosotros</span>
+        </a>
+        <a href="/">
+          <i class="fa-solid fa-house"></i>
+          <span class="texto">Inicio</span>
+        </a>
+        <a href="/log-in">
+          <i class="fa-solid fa-right-to-bracket"></i>
+          <span class="texto">Iniciar Sesión</span>
+        </a>
+        <a href="/register">
+          <i class="fa-solid fa-user"></i>
+          <span class="texto">Registrarme</span>
+        </a>
+        <a href="/configurations" class="configuraciones">Configuraciones</a>
+        <a href="/help">
+          <i class="fa-solid fa-circle-question"></i>
+          <span class="texto">Ayuda</span>
+        </a>
+        <a id="carritoBtnMobile" class="carrito-link">
+          <i class="fa-solid fa-cart-shopping"></i>
+          <span class="texto">Carrito</span>
+          <span id="carritoContadorMobile" class="carrito-contador"></span>
+        </a>
+        <!-- Carrito Modal -->
+        <div id="carritoMobile">
+          <div class="contenidoCarrito">
+            <div id="carritoSuperiorMobile">
+              <a id="tituloCarritoMobile">MI CARRITO</a>
+              <button id="cerrarCarritoMobile"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div id="carritoItemsMobile"></div>
+            <div id="subtotalCarritoMobile"></div>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main id="recomendaciones-container">
+    <section id="lista-recomendaciones" class="grid-recomendaciones">
+      <!-- Los discos se agregan aca -->
+    </section>
+  </id=>
+  </main>
+
+  <!-- Footer Escritorio -->
+  <footer class="desktop-footer">
+    <div class="site-footer">
+      <!-- Formas de Pago -->
+      <div class="payment">
+        <i class="fa-brands fa-cc-visa"></i>
+        <i class="fa-brands fa-cc-mastercard"></i>
+        <i class="fa-brands fa-cc-amex"></i>
+        <i class="fa-brands fa-paypal"></i>
+      </div>
+      <!-- Copyright -->
+      <div class="copyright">
+        <p>© 2022 Discos Heaven. Todos los derechos reservados.</p>
+      </div>
+      <!-- Redes Sociales -->
+      <div class="social">
+        <a href="https://www.facebook.com/discosheaven" target="_blank"><i class="fa-brands fa-facebook-f"></i></a>
+        <a href="https://www.instagram.com/discosheaven" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+        <a href="https://twitter.com/discosheaven" target="_blank"><i class="fa-brands fa-twitter"></i></a>
+        <a href="https://www.youtube.com/discosheaven" target="_blank"><i class="fa-brands fa-youtube"></i></a>
+      </div>
+    </div>
+  </footer>
+  <!-- Footer Movil -->
+  <footer class="mobile-footer">
+    <p>© 2022 Discos Heaven. Todos los derechos reservados.</p>
+  </footer>
+
+  <!-- Mensaje Flotante -->
+  <div id="mensajeFlotante" class="mensaje-flotante"></div>
+
+  <!-- Scripts --> 
+  <script src="/js/general.js"></script> 
+  <script src="/js/recommendations.js"></script>
+  <script src="/js/cart.js"></script>
+</body>
+
+</html>
+

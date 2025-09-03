@@ -1,0 +1,151 @@
+/* General */
+body {
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 0;
+}
+
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Contenedor del formulario */
+.container {
+    background: aliceblue !important;
+    padding: 26px 26px;
+    border-radius: 15px;
+    width: 400px;
+    height: 220px;
+    margin: 2rem auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+.form {
+    padding: 10px 10px;
+    border-radius: 10px;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Título del formulario */
+.nombre-form {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #002c5b;
+}
+
+/* Grupo de inputs */
+.input-group {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+/* Inputs */
+.input-group input {
+    width: 100%;
+    padding: 12px 10px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    outline: none;
+    transition: border 0.3s;
+    font-size: 16px;
+    background: none;
+}
+
+/* Focus en input */
+.input-group input:focus {
+    border-color: #007bff;
+}
+
+/* Labels flotantes */
+.input-group label {
+    position: absolute;
+    left: 10px;
+    top: 12px;
+    color: #999;
+    pointer-events: none;
+    transition: 0.3s;
+}
+
+/* Cuando el input tiene valor */
+.input-group input:focus + label,
+.input-group input:not(:placeholder-shown) + label {
+    top: -10px;
+    font-size: 12px;
+    color: #007bff;
+    background-color: aliceblue;
+    padding: 0 5px;
+}
+
+/* Botón */
+button#btnIngresar {
+    width: 150px;
+    padding: 12px;
+    background-color: #003267;
+    color: #fff;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button#btnIngresar:hover {
+    background-color: #80bdff;
+}
+
+/* Mensaje de éxito */
+#mensajeExito {
+    text-align: center;
+    margin-top: 15px;
+    color: green;
+    font-weight: bold;
+    display: none;
+}
+
+/* Contenedor de errores */
+#errorEmail, #errorPassword, #errores {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+    text-align: center;
+}
+
+/* Errores individuales dentro del contenedor */
+#errorEmail, #errorPassword, .error {
+    display: block;
+    text-align: center;
+}
+
+/* CD animado */
+.cd-container {
+  position: relative;
+}
+
+#cd-animation {
+  width: 120px;
+  height: 120px;
+  animation: spin 3s linear infinite;
+  transition: filter 0.5s, transform 0.5s;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Media queries para móvil */
+@media (max-width: 500px) {
+    .form {
+        padding: 20px;
+        width: 90%;
+    }
+}
