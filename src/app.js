@@ -41,7 +41,7 @@ app.use(connectLivereload());
 // Todos los discos
 app.get("/cds", async (req, res) => {
   try {
-    const [results] = await connection.query("SELECT * FROM discos");
+    const [results] = await connection.query("SELECT * FROM discos ORDER BY titulo ASC");
     res.json(Array.isArray(results) ? results : []);
   } catch (err) {
     console.error("Error en MySQL:", err.message);

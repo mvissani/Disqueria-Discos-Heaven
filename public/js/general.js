@@ -18,26 +18,25 @@ fetch("/cds")
 function actualizarHeaderUsuario() {
   const nombre = localStorage.getItem("nombreUsuario");
 
-  // Escritorio
+  // ----- Escritorio -----
   const miCuentaDesktop = document.querySelector(".menu-right .submenu a span.texto");
   const registrarDesktop = document.querySelector(".menu-right .submenu .dropdown a.registrarme");
   const iniciarSesionDesktop = document.querySelector(".menu-right .submenu .dropdown a.iniciar-sesion");
+  const comprasDesktop = document.querySelector(".menu-right .submenu a.mis-compras");
+  const favoritosDesktop = document.querySelector(".menu-right .submenu a.mis-favoritos");
+  const configuracionesDesktop = document.querySelector(".menu-right .submenu a.configuraciones");
 
-  // Móvil
-  const miCuentaMobile = document.querySelector(".menuMobile a span.texto");
-  const registrarMobile = document.querySelector(".menuMobile a.registrarme");
-  const iniciarSesionMobile = document.querySelector(".menuMobile a.iniciar-sesion");
+  // ----- Móvil -----
+  const iniciarSesionMobile = document.querySelector(".menuMobile a.iniciarsesion");
+  const registrarMobile = document.querySelector(".menuMobile a.registro");
+  const comprasMobile = document.querySelector(".menuMobile a.compras");
+  const favoritosMobile = document.querySelector(".menuMobile a.favoritos");
+  const configuracionesMobile = document.querySelector(".menuMobile a.configuraciones");
 
   if (nombre) {
-    // Cambia "Mi Cuenta" por el nombre
+    // --- Escritorio ---
     if (miCuentaDesktop) miCuentaDesktop.textContent = nombre;
-    if (miCuentaMobile) miCuentaMobile.textContent = nombre;
-
-    // Oculta "Registrarme"
     if (registrarDesktop) registrarDesktop.style.display = "none";
-    if (registrarMobile) registrarMobile.style.display = "none";
-
-    // Cambia "Iniciar Sesión" por "Cerrar Sesión"
     if (iniciarSesionDesktop) {
       iniciarSesionDesktop.textContent = "Cerrar Sesión";
       iniciarSesionDesktop.href = "#";
@@ -46,35 +45,39 @@ function actualizarHeaderUsuario() {
         window.location.reload();
       };
     }
+    [comprasDesktop, favoritosDesktop, configuracionesDesktop].forEach(el => { if (el) el.style.display = ""; });
+
+    // --- Móvil ---
+    if (registrarMobile) registrarMobile.style.display = "none";
     if (iniciarSesionMobile) {
-      iniciarSesionMobile.textContent = "Cerrar Sesión";
+      iniciarSesionMobile.querySelector(".texto").textContent = "Cerrar Sesión";
       iniciarSesionMobile.href = "#";
       iniciarSesionMobile.onclick = () => {
         localStorage.clear();
         window.location.reload();
       };
     }
+    [comprasMobile, favoritosMobile, configuracionesMobile].forEach(el => { if (el) el.style.display = ""; });
+
   } else {
-    // Si no está logueado, muestra todo normal
+    // --- Escritorio ---
     if (miCuentaDesktop) miCuentaDesktop.textContent = "Mi Cuenta";
-    if (miCuentaMobile) miCuentaMobile.textContent = "Mi Cuenta";
     if (registrarDesktop) registrarDesktop.style.display = "";
-    if (registrarMobile) registrarMobile.style.display = "";
     if (iniciarSesionDesktop) {
       iniciarSesionDesktop.textContent = "Iniciar Sesión";
       iniciarSesionDesktop.href = "/log-in";
       iniciarSesionDesktop.onclick = null;
     }
+    [comprasDesktop, favoritosDesktop, configuracionesDesktop].forEach(el => { if (el) el.style.display = "none"; });
+
+    // --- Móvil ---
+    if (registrarMobile) registrarMobile.style.display = "";
     if (iniciarSesionMobile) {
-      iniciarSesionMobile.textContent = "Iniciar Sesión";
+      iniciarSesionMobile.querySelector(".texto").textContent = "Iniciar Sesión";
       iniciarSesionMobile.href = "/log-in";
       iniciarSesionMobile.onclick = null;
     }
-
-    // Oculta configuraciones, mis compras y mis favoritos si NO está logueado
-    document.querySelectorAll('.configuraciones, .mis-compras, .mis-favoritos').forEach(el => {
-      el.style.display = "none";
-    });
+    [comprasMobile, favoritosMobile, configuracionesMobile].forEach(el => { if (el) el.style.display = "none"; });
   }
 }
 

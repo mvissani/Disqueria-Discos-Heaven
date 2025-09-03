@@ -32,12 +32,6 @@ router.get("/products", (req, res) =>
 res.sendFile(path.join(__dirname, "../views/products.html"));
 })
 
-// Cart
-router.get("/my-cart", (req, res) =>
-{
-res.sendFile(path.join(__dirname, "../views/mycart.html"));
-})
-
 // Sales
 router.get("/sales", (req, res) =>
 {

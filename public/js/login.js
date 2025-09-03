@@ -35,14 +35,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Guardar token y datos de usuario
       localStorage.setItem("token", data.token);
-      localStorage.setItem("usuario_id", data.id); // importante para favoritos
+      localStorage.setItem("usuario_id", data.id); 
       localStorage.setItem("nombreUsuario", data.nombre);
       localStorage.setItem("rolUsuario", data.rol);
 
       mensajeExito.style.display = "block";
       mensajeExito.textContent = `¡Bienvenido ${data.nombre}!`;
 
-      window.location.href = "/"; // Redirige al home
+      window.location.href = "/"; 
     } catch (err) {
       console.error(err);
       erroresDiv.textContent = "Error al iniciar sesión. Intente nuevamente.";
