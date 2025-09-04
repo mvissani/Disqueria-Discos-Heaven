@@ -4,8 +4,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const btnIzq = document.getElementById("izquierda");
   const btnDer = document.getElementById("derecha");
 
-  if (!carreteWrapper || !carrete) return; // Protege si no estamos en home
-
   let velocidad = 1;
   let isHover = false;
   let isClicking = false;
@@ -55,13 +53,19 @@ document.addEventListener("DOMContentLoaded", () => {
     if (direccion === "izq") {
       for (let i = discosElems.length - 1; i >= 0; i--) {
         const discoCenter = discosElems[i].offsetLeft + discosElems[i].offsetWidth / 2;
-        if (discoCenter < wrapperCenter) { targetDisco = discosElems[i]; break; }
+        if (discoCenter < wrapperCenter) {
+          targetDisco = discosElems[i];
+          break;
+        }
       }
       if (!targetDisco) targetDisco = discosElems[discosElems.length - 1];
     } else {
       for (let i = 0; i < discosElems.length; i++) {
         const discoCenter = discosElems[i].offsetLeft + discosElems[i].offsetWidth / 2;
-        if (discoCenter > wrapperCenter) { targetDisco = discosElems[i]; break; }
+        if (discoCenter > wrapperCenter) {
+          targetDisco = discosElems[i];
+          break;
+        }
       }
       if (!targetDisco) targetDisco = discosElems[0];
     }
@@ -74,22 +78,25 @@ document.addEventListener("DOMContentLoaded", () => {
     setTimeout(() => isClicking = false, 1000);
   }
 
-  // Eventos
+  // Hover pausa auto-scroll
   carreteWrapper.addEventListener("mouseenter", () => isHover = true);
   carreteWrapper.addEventListener("mouseleave", () => isHover = false);
-  if (btnIzq) btnIzq.addEventListener("click", () => moverDisco("izq"));
-  if (btnDer) btnDer.addEventListener("click", () => moverDisco("der"));
 
-  if (carrete) {
-    carrete.addEventListener("click", e => {
-      const btn = e.target.closest(".comprar");
-      if (!btn) return;
-      const id = btn.dataset.id;
-      const disco = window.discos?.find(d => d.id == id);
-      if (!disco) return;
-      document.dispatchEvent(new CustomEvent("agregarAlCarrito", { detail: { disco } }));
-    });
-  }
+  // Flechas
+  btnIzq.addEventListener("click", () => moverDisco("izq"));
+  btnDer.addEventListener("click", () => moverDisco("der"));
+
+  // --- Agregar al carrito ---
+  carrete.addEventListener("click", e => {
+    const btn = e.target.closest(".comprar");
+    if (!btn) return;
+    const id = btn.dataset.id;
+    const disco = window.discos?.find(d => d.id == id);
+    if (!disco) return;
+
+    // Disparamos evento que cart.js escuchará
+    document.dispatchEvent(new CustomEvent("agregarAlCarrito", { detail: { disco } }));
+  });
 
   // Inicializar carrete cuando los discos estén listos
   if (Array.isArray(window.discos) && window.discos.length) {

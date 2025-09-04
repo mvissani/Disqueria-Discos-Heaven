@@ -1,12 +1,8 @@
-// =============================
 // Variables globales
-// =============================
 window.discos = [];
-window.carrito = JSON.parse(sessionStorage.getItem("carrito")) || [];
+window.carrito = JSON.parse(localStorage.getItem("carrito")) || [];
 
-// =============================
 // Fetch de discos
-// =============================
 fetch("/cds")
   .then(res => res.json())
   .then(data => {
@@ -14,7 +10,6 @@ fetch("/cds")
     window.discos.forEach(disco => disco.apiUrl = `/api/cd/${disco.id}`);
     const event = new CustomEvent("discosListos", { detail: window.discos });
     window.dispatchEvent(event);
-
     if (typeof inicializarProductos === "function") inicializarProductos();
   })
   .catch(err => console.error("Error al obtener discos:", err));

@@ -11,7 +11,7 @@
   <title> Discos Heaven </title>
   <!-- Hojas de Estilo -->
   <link rel="stylesheet" href="/css/general.css">
-  <link rel="stylesheet" href="/css/sales.css">
+  <link rel="stylesheet" href="/css/artists.css">
   <link rel="stylesheet" href="/css/cart.css">
   <!-- Iconos -->
   <script src="https://kit.fontawesome.com/fd9bb0cd18.js" crossorigin="anonymous"></script>
@@ -184,9 +184,16 @@
   </header>
 
   <!-- Main -->
-  <main id="ofertas-container">
-    <section id="lista-ofertas" class="grid-ofertas">
-      <!-- Los discos se agregan con JS -->
+  <main>
+    <h1 class="title">Artistas</h1>
+    <img src="/img/musicplayer.png" class="img">
+    <section class="artistas-contenedor" id="contenedor-artistas">
+      <!-- Artistas se agregan con JS -->
+    </section>
+    <section class="discos-del-artista" id="discos-del-artista" style="display:none;">
+      <h2 id="titulo-artista"></h2>
+      <div id="contenedor-discos-artista" class="contenido"></div>
+      <button id="volver-artistas">Volver</button>
     </section>
   </main>
 
@@ -222,8 +229,8 @@
   <div id="mensajeFlotante" class="mensaje-flotante"></div>
 
   <!-- Scripts --> 
+  <script src="/js/artists.js"></script>
   <script src="/js/general.js"></script> 
-  <script src="/js/sales.js"></script>
   <script src="/js/cart.js"></script>
 </body>
 

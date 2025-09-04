@@ -1,11 +1,27 @@
+// =============================
 // Variables globales
-window.discos = window.discos || [];
+// =============================
+window.discos = [];
 window.carrito = JSON.parse(localStorage.getItem("carrito")) || [];
 
 let currentPage = 1;
 const limit = 8; // discos por página
 
+// =============================
+// Fetch de discos
+// =============================
+fetch("/cds")
+  .then(res => res.json())
+  .then(data => {
+    window.discos = data.discos || data; // <-- arreglo clave
+    const event = new CustomEvent("discosListos", { detail: window.discos });
+    window.dispatchEvent(event);
+  })
+  .catch(err => console.error("Error al obtener discos:", err));
+
+// =============================
 // Funciones de carrito
+// =============================
 function agregarAlCarrito(disco) {
   const itemExistente = window.carrito.find(i => i.id === disco.id);
   if (itemExistente) itemExistente.cantidad++;
@@ -23,7 +39,9 @@ function mostrarMensajeFlotante(texto) {
   setTimeout(() => mensaje.classList.remove("visible"), 2000);
 }
 
+// =============================
 // Mostrar discos con paginación
+// =============================
 function mostrarDiscos(listaDiscos) {
   const contenedor = document.getElementById("contenedor-discos");
   if (!contenedor) return;
@@ -54,18 +72,20 @@ function mostrarDiscos(listaDiscos) {
     </div>
   `).join("");
 
-  // Inicializar hover y favoritos
+  // Hover detalles
   document.querySelectorAll(".disco").forEach(d => {
     const detalles = d.querySelector(".detalles");
     d.addEventListener("mouseenter", () => { if (detalles) detalles.style.display = "block"; });
     d.addEventListener("mouseleave", () => { if (detalles) detalles.style.display = "none"; });
   });
-  inicializarFavoritos();
 
+  inicializarFavoritos();
   renderPagination(listaDiscos.length);
 }
 
-// Renderizar botones de paginación
+// =============================
+// Paginación
+// =============================
 function renderPagination(totalDiscos) {
   let paginationDiv = document.getElementById("pagination");
   if (!paginationDiv) {
@@ -84,7 +104,6 @@ function renderPagination(totalDiscos) {
     paginationDiv.appendChild(prev);
   }
 
-  // Botones numéricos
   for (let i = 1; i <= totalPages; i++) {
     const btn = document.createElement("button");
     btn.textContent = i;
@@ -101,7 +120,9 @@ function renderPagination(totalDiscos) {
   }
 }
 
-// Función para filtrar discos según búsqueda
+// =============================
+// Filtrado por búsqueda
+// =============================
 function filteredDiscos() {
   const termino = document.getElementById("busqueda")?.value.toLowerCase() || "";
   return window.discos.filter(d =>
@@ -110,7 +131,9 @@ function filteredDiscos() {
   );
 }
 
-// Inicializar productos
+// =============================
+// Inicialización productos
+// =============================
 function inicializarProductos() {
   const contenedor = document.getElementById("contenedor-discos");
   if (!contenedor) return;
@@ -132,7 +155,9 @@ function inicializarProductos() {
   mostrarDiscos(filteredDiscos());
 }
 
+// =============================
 // Inicializar favoritos
+// =============================
 function inicializarFavoritos() {
   const token = localStorage.getItem("token");
   if (!token) return;
@@ -173,5 +198,9 @@ function inicializarFavoritos() {
     });
 }
 
-// Inicializo DOM
-document.addEventListener("DOMContentLoaded", inicializarProductos);
+// =============================
+// Escuchar evento discosListos
+// =============================
+window.addEventListener("discosListos", () => {
+  inicializarProductos();
+});

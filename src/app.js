@@ -38,30 +38,11 @@ liveReloadServer.watch(path.join(__dirname, "views"));
 app.use(connectLivereload());
 
 // RUTAS
-// Todos los discos con paginación
-// GET /cds?page=1&limit=8
+// Todos los discos
 app.get("/cds", async (req, res) => {
-  const page = parseInt(req.query.page) || 1;      
-  const limit = parseInt(req.query.limit) || 8;    
-  const offset = (page - 1) * limit;
-
   try {
-    // Contar total de discos
-    const [totalRows] = await connection.query("SELECT COUNT(*) as total FROM discos");
-    const total = totalRows[0].total;
-
-    // Traer discos paginados
-    const [results] = await connection.query(
-      "SELECT * FROM discos ORDER BY titulo ASC LIMIT ? OFFSET ?",
-      [limit, offset]
-    );
-
-    res.json({
-      discos: results,
-      total,
-      page,
-      totalPages: Math.ceil(total / limit)
-    });
+    const [results] = await connection.query(`SELECT * FROM discos ORDER BY titulo ASC`);
+    res.json(Array.isArray(results) ? results : []);
   } catch (err) {
     console.error("Error en MySQL:", err.message);
     res.status(500).json({ error: err.message });
@@ -139,6 +120,11 @@ app.get("/my-favorites", (req, res) => {
 // Mis Compras
 app.get("/my-orders", (req, res) => {
   res.sendFile(path.join(__dirname, "views", "myorders.html"));
+});
+
+// Artistas
+app.get("/artists", (req, res) => {
+  res.sendFile(path.join(__dirname, "views", "artists.html"));
 });
 
 // API de ordenes
