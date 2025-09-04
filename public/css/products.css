@@ -185,6 +185,36 @@ input#busqueda {
   transition: color 0.2s;
 }
 
+/* ---- PAGINACIÓN ---- */
+#pagination {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin: 20px 0;
+  flex-wrap: wrap;
+}
+
+#pagination button {
+  border: none;
+  background-color: #00178d;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.2s, transform 0.1s;
+}
+
+#pagination button:hover:not(:disabled) {
+  background-color: #70c3ff;
+  transform: translateY(-2px) scale(1.05);
+}
+
+#pagination button:disabled {
+  background-color: #ccc;
+  cursor: default;
+  transform: none;
+}
 
 /* ---- RESPONSIVE ---- */
 

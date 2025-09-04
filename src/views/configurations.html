@@ -186,14 +186,15 @@
   <!-- Main -->
   <main>
     <div class="config-content">
+      <!-- Formulario de Actualizacion -->
       <h2 class="title">Mis Datos</h2>
-      <!-- Formulario de Registro -->
-      <form id="form" class="form">
+      <form id="form-config" class="form">
+        <input type="hidden" id="usuarioId">
         <input type="text" id="nombre" name="nombre" required minlength="3" placeholder="Nombre">
         <input type="text" id="apellido" name="apellido" required minlength="3" placeholder="Apellido">
         <input type="email" id="email" name="email" required placeholder="Correo Electrónico">
         <input type="password" id="password" name="password" required minlength="6" placeholder="Contraseña Actual">
-        <input type="password" id="newpassword" name="newpassword" required minlength="6" placeholder="Nueva Contraseña">
+        <input type="password" id="newpassword" name="newpassword" minlength="6" placeholder="Nueva Contraseña">
         <button id="actualizar" type="submit">Actualizar</button>
         <p id="mensajeExito">¡Actualización Exitosa!</p>
       </form>
@@ -232,6 +233,8 @@
   <script src="/js/general.js"></script> 
   <script src="/js/home.js"></script>  
   <script src="/js/cart.js"></script>
+  <script src="/js/configurations.js"></script> 
+
 </body>
 
 </html>

@@ -13,10 +13,10 @@ router.post("/cds", authMiddleware, checkRole("admin"), async (req, res) => {
       "INSERT INTO discos (titulo, descripcion) VALUES (?, ?)",
       [titulo, descripcion]
     );
-    res.send("Disco creado correctamente");
+    res.send("Disco creado correctamente!");
   } catch (err) {
     console.error(err);
-    res.status(500).send("Error al crear disco");
+    res.status(500).send("Error al crear disco.");
   }
 });
 

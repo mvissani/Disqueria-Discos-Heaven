@@ -35,7 +35,7 @@ const connection = pool.promise();
 // Test de conexión al iniciar
 connection.getConnection()
   .then(conn => {
-    console.log("Conexion exitosa a MySQL!");
+    console.log("Conexión exitosa a MySQL!");
     conn.release();
   })
   .catch(err => {

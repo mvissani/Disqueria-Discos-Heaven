@@ -1,5 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   const loginForm = document.getElementById("login-form");
+  if (!loginForm) return; 
+
   const emailInput = document.getElementById("email");
   const passwordInput = document.getElementById("password");
   const erroresDiv = document.getElementById("errores");
@@ -7,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   loginForm.addEventListener("submit", async (e) => {
     e.preventDefault();
-    erroresDiv.innerHTML = "";
+    erroresDiv.textContent = "";
     mensajeExito.style.display = "none";
 
     const email = emailInput.value.trim();
@@ -33,16 +35,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const data = JSON.parse(textoRespuesta);
 
-      // Guardar token y datos de usuario
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("usuario_id", data.id); 
-      localStorage.setItem("nombreUsuario", data.nombre);
-      localStorage.setItem("rolUsuario", data.rol);
+      console.log("Login recibido:", data); 
 
-      mensajeExito.style.display = "block";
-      mensajeExito.textContent = `¡Bienvenido ${data.nombre}!`;
+      // Guardar correctamente en sessionStorage
+      sessionStorage.setItem("token", data.token || "");
+      sessionStorage.setItem("usuario_id", data.id !== undefined ? data.id : "");
+      sessionStorage.setItem("nombreUsuario", data.nombre || "");
+      sessionStorage.setItem("rolUsuario", data.rol || "");
+      sessionStorage.setItem("usuarioEmail", data.email || ""); 
 
-      window.location.href = "/"; 
+      // Confirmamos que se guardó antes de redirigir
+      console.log("Email del usuario desde sessionStorage:", sessionStorage.getItem("usuarioEmail"));
+
+      if (sessionStorage.getItem("usuarioEmail")) {
+        mensajeExito.style.display = "block";
+        mensajeExito.textContent = `¡Bienvenido ${data.nombre || ""}!`;
+        // Redirigir al home
+        window.location.href = "/";
+      } else {
+        erroresDiv.textContent = "No se pudo guardar la sesión. Intente nuevamente.";
+      }
+
     } catch (err) {
       console.error(err);
       erroresDiv.textContent = "Error al iniciar sesión. Intente nuevamente.";

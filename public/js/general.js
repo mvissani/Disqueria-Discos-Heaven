@@ -1,8 +1,12 @@
+// =============================
 // Variables globales
+// =============================
 window.discos = [];
-window.carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+window.carrito = JSON.parse(sessionStorage.getItem("carrito")) || [];
 
+// =============================
 // Fetch de discos
+// =============================
 fetch("/cds")
   .then(res => res.json())
   .then(data => {
@@ -10,13 +14,16 @@ fetch("/cds")
     window.discos.forEach(disco => disco.apiUrl = `/api/cd/${disco.id}`);
     const event = new CustomEvent("discosListos", { detail: window.discos });
     window.dispatchEvent(event);
+
     if (typeof inicializarProductos === "function") inicializarProductos();
   })
   .catch(err => console.error("Error al obtener discos:", err));
 
-// Actualizar header según usuario
+// =============================
+// Función para actualizar header
+// =============================
 function actualizarHeaderUsuario() {
-  const nombre = localStorage.getItem("nombreUsuario");
+  const nombre = sessionStorage.getItem("nombreUsuario");
 
   // ----- Escritorio -----
   const miCuentaDesktop = document.querySelector(".menu-right .submenu a span.texto");
@@ -40,22 +47,17 @@ function actualizarHeaderUsuario() {
     if (iniciarSesionDesktop) {
       iniciarSesionDesktop.textContent = "Cerrar Sesión";
       iniciarSesionDesktop.href = "#";
-      iniciarSesionDesktop.onclick = () => {
-        localStorage.clear();
-        window.location.reload();
-      };
+      iniciarSesionDesktop.onclick = () => { sessionStorage.clear(); window.location.reload(); };
     }
     [comprasDesktop, favoritosDesktop, configuracionesDesktop].forEach(el => { if (el) el.style.display = ""; });
 
     // --- Móvil ---
     if (registrarMobile) registrarMobile.style.display = "none";
     if (iniciarSesionMobile) {
-      iniciarSesionMobile.querySelector(".texto").textContent = "Cerrar Sesión";
+      const spanTexto = iniciarSesionMobile.querySelector(".texto");
+      if (spanTexto) spanTexto.textContent = "Cerrar Sesión";
       iniciarSesionMobile.href = "#";
-      iniciarSesionMobile.onclick = () => {
-        localStorage.clear();
-        window.location.reload();
-      };
+      iniciarSesionMobile.onclick = () => { sessionStorage.clear(); window.location.reload(); };
     }
     [comprasMobile, favoritosMobile, configuracionesMobile].forEach(el => { if (el) el.style.display = ""; });
 
@@ -73,7 +75,8 @@ function actualizarHeaderUsuario() {
     // --- Móvil ---
     if (registrarMobile) registrarMobile.style.display = "";
     if (iniciarSesionMobile) {
-      iniciarSesionMobile.querySelector(".texto").textContent = "Iniciar Sesión";
+      const spanTexto = iniciarSesionMobile.querySelector(".texto");
+      if (spanTexto) spanTexto.textContent = "Iniciar Sesión";
       iniciarSesionMobile.href = "/log-in";
       iniciarSesionMobile.onclick = null;
     }
@@ -81,50 +84,42 @@ function actualizarHeaderUsuario() {
   }
 }
 
-// Menú hamburguesa y carrito
+// =============================
+// DOMContentLoaded
+// =============================
 document.addEventListener("DOMContentLoaded", () => {
   actualizarHeaderUsuario();
 
+  // ----- Menú Hamburguesa -----
   const menuToggle = document.getElementById("menuToggle");
   const menuMobile = document.querySelector(".menuMobile");
   const menuClose = document.getElementById("menuClose");
 
-  if (menuToggle && menuMobile) {
-    menuToggle.addEventListener("click", () => menuMobile.classList.add("active"));
-  }
-  if (menuClose && menuMobile) {
-    menuClose.addEventListener("click", () => menuMobile.classList.remove("active"));
-  }
+  if (menuToggle && menuMobile) menuToggle.addEventListener("click", () => menuMobile.classList.add("active"));
+  if (menuClose && menuMobile) menuClose.addEventListener("click", () => menuMobile.classList.remove("active"));
 
-  // Carrito móvil
+  // ----- Carrito Móvil -----
   const carritoBtnMobile = document.getElementById("carritoBtnMobile");
   const carritoModalMobile = document.getElementById("carritoMobile");
   const cerrarCarritoMobile = document.getElementById("cerrarCarritoMobile");
 
   if (carritoBtnMobile && carritoModalMobile && cerrarCarritoMobile) {
-    carritoBtnMobile.addEventListener("click", e => {
-      e.preventDefault();
-      carritoModalMobile.style.display = "flex";
-    });
+    carritoBtnMobile.addEventListener("click", e => { e.preventDefault(); carritoModalMobile.style.display = "flex"; });
     cerrarCarritoMobile.addEventListener("click", () => carritoModalMobile.style.display = "none");
     carritoModalMobile.addEventListener("click", e => { if (e.target === carritoModalMobile) carritoModalMobile.style.display = "none"; });
   }
 
-  // Carrito escritorio
+  // ----- Carrito Escritorio -----
   const carritoBtn = document.getElementById("carritoBtn");
   const carritoModal = document.getElementById("carrito");
   const cerrarCarrito = document.getElementById("cerrarCarrito");
 
   if (carritoBtn && carritoModal && cerrarCarrito) {
-    carritoBtn.addEventListener("click", e => {
-      e.preventDefault();
-      carritoModal.style.display = "flex";
-    });
+    carritoBtn.addEventListener("click", e => { e.preventDefault(); carritoModal.style.display = "flex"; });
     cerrarCarrito.addEventListener("click", () => carritoModal.style.display = "none");
     carritoModal.addEventListener("click", e => { if (e.target === carritoModal) carritoModal.style.display = "none"; });
   }
 
-  window.addEventListener("resize", () => {
-    if (window.innerWidth > 768 && menuMobile) menuMobile.classList.remove("active");
-  });
+  // ----- Resize -----
+  window.addEventListener("resize", () => { if (window.innerWidth > 768 && menuMobile) menuMobile.classList.remove("active"); });
 });

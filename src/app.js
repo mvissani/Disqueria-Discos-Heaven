@@ -38,11 +38,30 @@ liveReloadServer.watch(path.join(__dirname, "views"));
 app.use(connectLivereload());
 
 // RUTAS
-// Todos los discos
+// Todos los discos con paginación
+// GET /cds?page=1&limit=8
 app.get("/cds", async (req, res) => {
+  const page = parseInt(req.query.page) || 1;      
+  const limit = parseInt(req.query.limit) || 8;    
+  const offset = (page - 1) * limit;
+
   try {
-    const [results] = await connection.query("SELECT * FROM discos ORDER BY titulo ASC");
-    res.json(Array.isArray(results) ? results : []);
+    // Contar total de discos
+    const [totalRows] = await connection.query("SELECT COUNT(*) as total FROM discos");
+    const total = totalRows[0].total;
+
+    // Traer discos paginados
+    const [results] = await connection.query(
+      "SELECT * FROM discos ORDER BY titulo ASC LIMIT ? OFFSET ?",
+      [limit, offset]
+    );
+
+    res.json({
+      discos: results,
+      total,
+      page,
+      totalPages: Math.ceil(total / limit)
+    });
   } catch (err) {
     console.error("Error en MySQL:", err.message);
     res.status(500).json({ error: err.message });
