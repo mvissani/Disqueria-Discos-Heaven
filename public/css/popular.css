@@ -86,3 +86,13 @@ button {
 .mensaje-flotante.visible {
   opacity: 1;
 }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .grid-populares {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 60px 0px;
+  }
+}

@@ -143,3 +143,12 @@ button#btnregistro:hover {
   from { opacity: 0.5; transform: scale(1); }
   to { opacity: 1; transform: scale(1.1); }
 }
+
+/* Responsive */
+@media (max-width: 768px) {
+  main.container {
+    flex-direction: row;
+    width: 500px;
+    height: 200px;
+  }
+}

@@ -168,7 +168,7 @@ main {
 
 .toggle-buttons .izq,
 .toggle-buttons .der {
-  position: static; /* se alinea con flexbox */
+  position: static; 
 }
 
 .toggle-buttons button:hover {
@@ -178,30 +178,29 @@ main {
 /* Responsive */
 @media (max-width: 768px) {
   .disco-individual {
+    display: flex;
     flex-direction: column;
     align-items: center;
     padding: 1.5rem;
+    width: 700px;
+    height: 500px;
+    margin-bottom: 60px;
   }
-
+  .disco-descripcion {
+    display: none;
+  }
   .disco-left, .disco-right {
-    width: 100%;
+    flex-direction: column;
     text-align: center;
     align-items: center;
   }
-
-  .lista-canciones li {
-    justify-content: center;
-    gap: 1rem;
+  .disco-anio, .disco-canciones, .disco-duracion {
+    display: none;
   }
-
+  .spotify {
+    display: none;
+  }
   .toggle-buttons {
-    position: absolute;
-    flex-direction: row;
-    justify-content: center;
-    transform: none;
-    margin-top: 1rem;
-    gap: 20px;
-    left: 0;
-    right: 0;
+    display: none;
   }
 }

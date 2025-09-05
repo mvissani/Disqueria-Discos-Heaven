@@ -78,9 +78,6 @@ function mostrarDiscosDelArtista(artista) {
     });
   });
 
-  // Inicializar favoritos
-  inicializarFavoritos();
-
   // Botón volver
   document.getElementById("volver-artistas").onclick = () => {
     seccionDiscos.style.display = "none";

@@ -26,3 +26,12 @@ h3 {
 .link {
     padding-left: 0px !important;
 }
+
+/* ---- RESPONSIVE ---- */
+
+@media (max-width: 768px) {
+  .help-content {
+    height: fit-content;
+    width: fit-content;
+  }
+}

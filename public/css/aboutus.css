@@ -44,11 +44,6 @@ main {
   height: 140px;
 }
 
-i {
-  font-size: 18px;
-  padding-left: 6px;
-}
-
 a {
   padding-left: 1px !important;
 }
@@ -93,7 +88,7 @@ textarea {
 }
 
 input:hover, textarea:hover {
-  border-color: rgb(0, 0, 255);
+  border-color: rgb(146, 109, 180);
 }
 
 /* Boton del Formulario */
@@ -102,14 +97,14 @@ input:hover, textarea:hover {
   min-height: 40px;
 }
 
-button {
+button.enviar {
   margin: 8px 0px;
   border-radius: 8px;
-  border: 2px solid black;
+  border: none;
   background-color: rgb(146, 109, 180);
 }
 
-button:hover {
+button.enviar:hover {
   background-color: rgb(97, 59, 133);
 }
 
@@ -134,4 +129,13 @@ button:hover {
   font-weight: bold;
   text-align: center;
   margin-top: 2px;
+}
+
+/* ---- RESPONSIVE ---- */
+
+@media (max-width: 768px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+  }
 }

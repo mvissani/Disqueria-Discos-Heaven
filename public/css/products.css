@@ -22,7 +22,7 @@ input#busqueda {
   width: 220px;
   padding: 6px 12px;
   border-radius: 10px;
-  border: 1px solid #ccc;
+  border: 2px solid #00178d;;
   outline-offset: 2px;
 }
 
@@ -31,8 +31,6 @@ input#busqueda {
   height: 36px !important;
   padding: 8px 12px;
   border-radius: 10px;
-  border: 1px solid #ccc;
-  outline-offset: 2px;
 }
 
 /* Disco y sus Detalles */
@@ -258,6 +256,10 @@ input#busqueda {
     gap: 15px;
     padding: 0 10px;
     align-items: center;
+  }
+  div#pagination {
+    position: relative;
+    bottom: 15px;
   }
   .disco {
     max-width: 100%;

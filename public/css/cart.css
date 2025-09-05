@@ -272,7 +272,7 @@ button.mas:active, button.menos:active {
 }
 
 .carrito-link {
-  position: relative; /* contenedor de referencia */
+  position: relative; 
   display: inline-flex;
   align-items: center;
   gap: 5px;
@@ -288,4 +288,48 @@ button.mas:active, button.menos:active {
 
 #btnFinalizarCompra:hover {
   background-color: #00eeff;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  button#btnFinalizarCompra {
+    position: absolute;
+    left: 260px;
+    top: 10px;
+  }
+  button {
+  outline: none;
+  }
+  button.mas, button.menos {
+    outline: none;
+    font-size: 14px;           
+    padding: 4px 8px;          
+    border-radius: 4px;        
+    border: none;
+    backdrop-filter: blur(3px);
+    cursor: pointer;
+    transition: transform 0.1s, background 0.2s;
+  } 
+  button.mas:hover, button.menos:hover {
+    background: rgba(86, 89, 90, 0.059);
+    transform: scale(1.05);
+    outline: none;
+  }
+  button.mas:active, button.menos:active {
+    transform: scale(0.95);
+    outline: none;
+  }
+  button.eliminarBtn {
+    background: #e74c3c;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 8px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  button.eliminarBtn:hover {
+    background: #c0392b;
+  }
 }
