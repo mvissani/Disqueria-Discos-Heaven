@@ -11,7 +11,6 @@ fetch("/cds")
   })
   .catch(err => console.error("Error al obtener discos:", err));
 
-// Mostrar artistas únicos
 function mostrarArtistasUnicos() {
   const contenedor = document.getElementById("contenedor-artistas");
   if (!contenedor) return;
@@ -22,13 +21,19 @@ function mostrarArtistasUnicos() {
   window.discos.forEach(disco => {
     if (!artistasVistos.has(disco.artista)) {
       artistasVistos.add(disco.artista);
-      artistas.push(disco.artista);
+      artistas.push({
+        nombre: disco.artista,
+        img: disco.img_artista
+      });
     }
   });
 
+  artistas.sort((a, b) => a.nombre.localeCompare(b.nombre, "es", { sensitivity: "base" }));
+
   contenedor.innerHTML = artistas.map(artista => `
-    <div class="artista" data-artista="${artista}">
-      <h3>${artista}</h3>
+    <div class="artista" data-artista="${artista.nombre}">
+      <img class="foto-artista" src="${artista.img}" alt="${artista.nombre}">
+      <div class="overlay"><h3>${artista.nombre}</h3></div>
     </div>
   `).join("");
 
@@ -101,28 +106,3 @@ function mostrarMensajeFlotante(texto) {
   setTimeout(() => mensaje.classList.remove("visible"), 2000);
 }
 
-// Inicializar favoritos
-function inicializarFavoritos() {
-  const token = localStorage.getItem("token");
-  if (!token) return;
-
-  document.querySelectorAll(".favorito").forEach(btn => {
-    const discoId = Number(btn.dataset.id);
-    const icono = btn.querySelector("i");
-
-    btn.addEventListener("click", async () => {
-      try {
-        const res = await fetch("/api/favorites", {
-          method: "POST",
-          headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
-          body: JSON.stringify({ disco_id: discoId })
-        });
-        const data = await res.json();
-        if (data.favorito) icono.classList.replace("fa-regular", "fa-solid");
-        else icono.classList.replace("fa-solid", "fa-regular");
-      } catch { 
-        alert("No se pudo actualizar el favorito."); 
-      }
-    });
-  });
-}
