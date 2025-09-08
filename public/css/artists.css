@@ -1,9 +1,11 @@
+/* General */
 main {
   background-color: aliceblue !important;
   margin: 10px 10px;
   border-radius: 10px;
 }
 
+/* Artistas */
 .title {
   margin-top: 10px;
   text-align: center;
@@ -171,9 +173,9 @@ main {
 .img {
   width: 100px;
   height: 100px;
-  position: absolute;
-  top: 80px;
-  left: 700px;
+  position: static;
+  margin: 0px auto;
+  display: flex;
 }
 
 /* Foto Artistas */
@@ -211,24 +213,109 @@ main {
   color: white;
 }
 
+
 /* ---- RESPONSIVE ---- */
-@media (max-width: 768px) {
-  .artistas-contenedor {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    align-content: center;
-    padding: 50px 0px;
-  }
+main {
+  margin-top: 80px; 
+  margin-bottom: 80px;
+}
+
+/* 992px */
+@media (max-width: 992px) {
   .title {
-    display: none;
+    display: block;
+    text-align: center;
   }
-  button#volver-artistas {
+  .artistas-contenedor {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 15px;
+    margin: 10px;
+  }
+  .artista {
+    width: 180px;
+    height: 180px;
+    border-radius: 8px;
+    overflow: hidden;      
+    display: flex;
+    align-items: center;
+    justify-content: center;
     position: relative;
-    bottom: 30px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
   }
-  img.img {
-    display: none;
+  .foto-artista {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.3s ease;
+  }
+  #contenedor-discos-artista {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 15px;
+  }
+  .disco img.portada {
+    width: 100%;
+    max-width: 140px;
+    height: auto;
+    border-radius: 8px;
+    object-fit: cover;
+  }
+  .img {
+    width: 100px;
+    height: 100px;
+    position: static;
+    margin: 0px auto;
+    display: flex;
+  }
+  #volver-artistas {
+    display: block;
+    margin: 20px auto;
+    padding: 8px 16px;
+    font-size: 0.95rem;
   }
 }
 
+/* 576px */
+@media (max-width: 576px) {
+  .title {
+    font-size: 1.2rem;
+    text-align: center;
+  }
+  .artistas-contenedor {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 10px;
+    margin: 5px;
+  }
+  .artista {
+    width: 120px;
+    height: 120px;
+  }
+  .foto-artista {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+  #contenedor-discos-artista {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 10px;
+  }
+  .disco img.portada {
+    width: 100%;
+    max-width: 120px;
+    height: auto;
+    border-radius: 8px;
+    object-fit: cover;
+  }
+  .img {
+    width: 60px;
+    height: 60px;
+    margin: 5px auto;
+  }
+  #volver-artistas {
+    padding: 6px 12px;
+    font-size: 0.85rem;
+    margin: 15px auto;
+  }
+}
