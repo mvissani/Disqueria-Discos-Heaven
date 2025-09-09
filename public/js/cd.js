@@ -34,22 +34,28 @@ if (!discoSlug) {
               ${disco.descuento_activo && disco.descuento > 0 
                 ? `<span style="text-decoration: line-through;">$${Number(disco.precio).toLocaleString("es-AR")}</span> 
                   <span style="color: lightgreen;">${disco.descuento}%</span>
-                  <p style="font-size: 22px; font-weight: bold;">$${Number(precioFinal).toLocaleString("es-AR")}</p>
-                  `
+                  <p style="font-size: 22px; font-weight: bold;">$${Number(precioFinal).toLocaleString("es-AR")}</p>`
                 : `$${Number(disco.precio).toLocaleString("es-AR")}`
               }
             </p>
 
-            <p id="stockDisponible">
-              ${disco.stock > 0 ? `Stock disponible: ${disco.stock}` : "Agotado"}
-            </p>
-
-            <button class="comprar" data-id="${disco.id}" data-slug="${disco.slug}" ${disco.stock <= 0 ? "disabled" : ""}>
+            <button class="comprar ${disco.stock <= 0 ? "sin-stock" : ""}" 
+              data-id="${disco.id}" 
+              data-slug="${disco.slug}" 
+              ${disco.stock <= 0 ? "disabled" : ""}>
               ${disco.stock > 0 ? "Comprar" : "Sin stock"}
             </button>
           </div>
 
           <div class="disco-right">
+            
+            <!-- Contenedor + Flechas -->
+            <div class="img-container">
+              <button class="izq"><i class="fa-solid fa-chevron-left"></i></button>
+                <img class="img-cd" src="/img/cd4cd.png">
+              <button class="der"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+
             <div class="info-container">
               <a class="spotify" href="${disco.spotifyUrl}" target="_blank" rel="noopener">
                 <i class="fa-brands fa-spotify"></i>
@@ -63,11 +69,6 @@ if (!discoSlug) {
             <div class="lista-canciones-container">
               <h3>Lista de canciones</h3>
               <ul class="lista-canciones"></ul>
-            </div>
-
-            <div class="toggle-buttons">
-              <button class="izq"><i class="fa-solid fa-arrow-left"></i></button>
-              <button class="der"><i class="fa-solid fa-arrow-right"></i></button>
             </div>
           </div>
         </div>
@@ -87,7 +88,6 @@ if (!discoSlug) {
         const itemExistente = window.carrito.find(i => i.id === disco.id);
         const cantidadEnCarrito = itemExistente ? itemExistente.cantidad : 0;
 
-        // Validar stock real
         if (cantidadEnCarrito >= disco.stock) {
           const mensaje = document.getElementById("mensajeFlotante");
           if (mensaje) {
@@ -95,16 +95,14 @@ if (!discoSlug) {
             mensaje.classList.add("visible");
             setTimeout(() => mensaje.classList.remove("visible"), 2000);
           }
-          return; // Bloquea la compra
+          return;
         }
 
-        // Calcular precio final (descuento)
         let precioFinal = disco.precio;
         if (disco.descuento_activo && disco.descuento > 0) {
           precioFinal = disco.precio * (1 - disco.descuento / 100);
         }
 
-        // Agregar al carrito
         if (itemExistente) itemExistente.cantidad++;
         else window.carrito.push({
           id: disco.id,
@@ -116,21 +114,15 @@ if (!discoSlug) {
           cantidad: 1
         });
 
-        // Actualizar stock restante visible
         const stockRestante = disco.stock - (itemExistente ? itemExistente.cantidad : 1);
-        const stockSpan = document.getElementById("stockDisponible");
-        if (stockSpan) stockSpan.textContent = stockRestante > 0 ? `Stock disponible: ${stockRestante}` : "Agotado";
-
-        // Deshabilitar botón si no queda stock
         if (stockRestante <= 0 && btnComprar) {
           btnComprar.disabled = true;
           btnComprar.textContent = "Sin stock";
+          btnComprar.classList.add("sin-stock");
         }
 
-        // Guardar carrito
         localStorage.setItem("carrito", JSON.stringify(window.carrito));
 
-        // Mensaje flotante
         const mensaje = document.getElementById("mensajeFlotante");
         if (mensaje) {
           mensaje.textContent = `"${disco.titulo}" se agregó al carrito!`;
@@ -153,8 +145,6 @@ if (!discoSlug) {
         mostrandoInfo = !mostrandoInfo;
         infoContainer.style.display = mostrandoInfo ? "block" : "none";
         cancionesContainer.style.display = mostrandoInfo ? "none" : "block";
-        leftArrow.classList.toggle("rotated", !mostrandoInfo);
-        rightArrow.classList.toggle("rotated", mostrandoInfo);
       };
 
       leftArrow.addEventListener("click", toggleContent);

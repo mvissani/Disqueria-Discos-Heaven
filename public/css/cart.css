@@ -189,7 +189,7 @@ button.mas:active, button.menos:active {
   color: #333;
 }
 
-#carritoItems .item-carrito button.eliminarBtn {
+button.eliminarBtn {
   background: #e74c3c;
   border: none;
   padding: 6px 10px;
@@ -200,7 +200,7 @@ button.mas:active, button.menos:active {
   transition: background-color 0.3s ease;
 }
 
-#carritoItems .item-carrito button.eliminarBtn:hover {
+button.eliminarBtn:hover {
   background: #c0392b;
 }
 
@@ -278,58 +278,71 @@ button.mas:active, button.menos:active {
   gap: 5px;
 }
 
-#btnFinalizarCompra {
+button#btnFinalizarCompra {
   border-radius: 10px;
   background-color: #3abec8;
   width: 140px;
-  height: 30px;
+  height: 40px;
   border: none;
 }
 
-#btnFinalizarCompra:hover {
+button#btnFinalizarCompra:hover {
   background-color: #00eeff;
 }
 
-/* Responsive */
+
+/* ---- RESPONSIVE ---- */
+
+/* 768px */
 @media (max-width: 768px) {
+  .mi-carrito-contenedor,
+  #carrito > div,
+  .contenidoCarrito {
+    max-width: 95%;
+    padding: 15px 20px;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  #tituloCarrito {
+    font-size: 20px;
+    text-align: center;
+  }
+  #carritoItems .item-carrito {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 10px;
+    padding: 15px 0;
+  }
+  #carritoItems .item-carrito img {
+    width: 100px;
+    height: 100px;
+  }
+  .item-derecha {
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    height: auto;
+    margin: 0;
+  }
+  .cantidad-container {
+    justify-content: center;
+  }
+  #subtotalCarrito {
+    text-align: center;
+    font-size: 1rem;
+  }
   button#btnFinalizarCompra {
-    position: absolute;
-    left: 260px;
-    top: 10px;
-  }
-  button {
-  outline: none;
-  }
-  button.mas, button.menos {
-    outline: none;
-    font-size: 14px;           
-    padding: 4px 8px;          
-    border-radius: 4px;        
+    display: block;
+    width: 90%;
+    max-width: 180px;
+    line-height: 30px;     
+    margin: 6px auto;      
+    border-radius: 10px;
+    background-color: #3abec8;
     border: none;
-    backdrop-filter: blur(3px);
     cursor: pointer;
-    transition: transform 0.1s, background 0.2s;
-  } 
-  button.mas:hover, button.menos:hover {
-    background: rgba(86, 89, 90, 0.059);
-    transform: scale(1.05);
-    outline: none;
-  }
-  button.mas:active, button.menos:active {
-    transform: scale(0.95);
-    outline: none;
-  }
-  button.eliminarBtn {
-    background: #e74c3c;
-    border: none;
-    padding: 6px 10px;
-    border-radius: 8px;
-    color: white;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  button.eliminarBtn:hover {
-    background: #c0392b;
+    text-align: center;     
+    font-size: 16px;        
   }
 }
