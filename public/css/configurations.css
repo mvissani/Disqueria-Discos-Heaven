@@ -1,79 +1,116 @@
+/* General */
 main {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f4f8fc; 
 }
 
+/* Titulo Mis Datos */
 .title {
-    text-align: center;
-    margin-top: 12px;
-    color: #002c5b;
+  text-align: center;
+  margin: 20px 0;
+  color: #002c5b;
+  font-size: 1.6rem;
+  font-weight: 700;
 }
 
+/* Contenido */
 .config-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: aliceblue !important;
-    width: 480px;
-    height: 340px;
-    border-radius: 10px;
-    gap: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: aliceblue !important;
+  width: 480px;
+  max-width: 95%; 
+  padding: 20px;
+  border-radius: 12px;
+  gap: 16px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
 }
 
+/* Inputs */
 input {
-    border-radius: 10px;
-    width: 240px;
-    height: 30px;
-    padding-left: 2px;
-    background-color: aliceblue;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 280px;
+  height: 38px;
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  background-color: #fdfdfd;
+  font-size: 0.95rem;
+  transition: border-color 0.3s;
 }
 
-input:hover {
-    border: 1.6px solid darkslateblue !important;
+input:hover,
+input:focus {
+  border: 1.6px solid darkslateblue !important;
+  outline: none;
 }
 
+/* Formulario */
 .form {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  width: 100%;
 }
 
+/* Boton Actualizar */
 button#actualizar {
-    width: 90px;
-    height: 30px;
-    border-radius: 10px;
-    text-align: center;
+  width: 120px;
+  height: 38px;
+  border-radius: 8px;
+  text-align: center;
 }
 
-.form input,
 .form button {
   padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-}
-
-.form button {
+  border: none;
+  border-radius: 8px;
   background: #134e97;
   color: white;
   font-weight: bold;
   cursor: pointer;
-  transition: background 0.3s;
-  display: flex;            
+  transition: background 0.3s, transform 0.2s;
+  display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .form button:hover {
-  background: #4d6395;
+  background: #256192;
+  transform: scale(1.05);
 }
 
+/* Mensaje de Exito */
 #mensajeExito {
-    text-align: center;
-    display: none;
+  text-align: center;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: green;
+  display: none;
+  margin-top: 10px;
 }
 
 
+/* ---- RESPONSIVE ---- */
 
-
+/* 480px */
+@media (max-width: 480px) {
+  .config-content {
+    width: 100%;
+    padding: 16px;
+  }
+  .title {
+    font-size: 1.4rem;
+  }
+  input {
+    max-width: 100%;
+  }
+  button#actualizar {
+    width: 100%;
+  }
+}
