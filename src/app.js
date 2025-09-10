@@ -15,8 +15,8 @@ const indexRouter = require("./routes/index-routes");
 const usersRouter = require("./routes/users-routes"); 
 const adminRouter = require("./routes/admin-routes");
 const aboutusRouter = require("./routes/aboutus-routes");
-const favoritesRouter = require("./routes/favorites-route");
-const myordersRouter = require("./routes/myorders-route");
+const favoritesRouter = require("./routes/favorites-routes");
+const myordersRouter = require("./routes/myorders-routes");
 
 // Express
 const app = express();
