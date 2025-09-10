@@ -5,8 +5,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const carritoItems = document.getElementById("carritoItems");
   const subtotalCarrito = document.getElementById("subtotalCarrito");
   const contador = document.getElementById("carritoContador");
+  const historialContainer = document.getElementById("historialCompras");
 
+  // =============================
   // Funciones auxiliares
+  // =============================
   function guardarCarrito() {
     localStorage.setItem("carrito", JSON.stringify(carritoData));
   }
@@ -22,6 +25,14 @@ document.addEventListener("DOMContentLoaded", () => {
     subtotalCarrito.innerHTML = `<p>Subtotal: $${subtotal.toLocaleString("es-AR")}</p>`;
   }
 
+  function mostrarMensajeFlotante(texto) {
+    const mensaje = document.getElementById("mensajeFlotante");
+    if (!mensaje) return;
+    mensaje.textContent = texto;
+    mensaje.classList.add("visible");
+    setTimeout(() => mensaje.classList.remove("visible"), 2000);
+  }
+
   function crearItemCarrito(item) {
     const div = document.createElement("div");
     div.classList.add("item-carrito");
@@ -33,7 +44,9 @@ document.addEventListener("DOMContentLoaded", () => {
     return div;
   }
 
+  // =============================
   // Mostrar carrito
+  // =============================
   function mostrarCarrito() {
     carritoItems.innerHTML = "";
     if (carritoData.length === 0) {
@@ -51,64 +64,74 @@ document.addEventListener("DOMContentLoaded", () => {
     carrito.style.display = "flex";
   }
 
-  // Finalizar compra (API)
-  function finalizarCompra() {
+  // =============================
+  // Finalizar compra
+  // =============================
+  async function finalizarCompra() {
     if (carritoData.length === 0) return;
 
-    const token = localStorage.getItem("token"); 
+    const token = sessionStorage.getItem("token");
     if (!token) {
       alert("Debes iniciar sesión para finalizar la compra.");
       return;
     }
 
-    fetch("/api/myorders", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
-      },
-      body: JSON.stringify({ items: carritoData })
-    })
-    .then(res => res.json())
-    .then(data => {
-      if (data.success) {
-        alert("¡Compra realizada con éxito!");
+    try {
+      const res = await fetch("/api/myorders", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({ items: carritoData })
+      });
 
-        // Vaciar carrito
+      if (!res.ok) {
+        const error = await res.json();
+        alert(error.error || "Error al realizar la compra.");
+        return;
+      }
+
+      const data = await res.json();
+      if (data.success) {
+        mostrarMensajeFlotante("¡Compra realizada con éxito!");
+
         carritoData = [];
         guardarCarrito();
         actualizarContadores();
         actualizarSubtotal();
         mostrarCarrito();
 
-        // Actualizar historial
         cargarHistorial();
-      } else {
-        console.error(data);
-        alert("Error al realizar la compra.");
       }
-    })
-    .catch(err => {
+    } catch (err) {
       console.error("Error en fetch:", err);
       alert("Ocurrió un error al finalizar la compra.");
-    });
+    }
   }
 
-  // Historial de compras (API)
-  function cargarHistorial() {
-    const token = localStorage.getItem("token");
+  // =============================
+  // Historial de compras
+  // =============================
+  async function cargarHistorial() {
+    const token = sessionStorage.getItem("token");
     if (!token) return;
 
-    fetch("/api/myorders/me", {
-      headers: { "Authorization": `Bearer ${token}` }
-    })
-    .then(res => res.json())
-    .then(compras => {
-      const contenedor = document.getElementById("historialCompras");
-      contenedor.innerHTML = "";
+    try {
+      const res = await fetch("/api/myorders/me", {
+        headers: { "Authorization": `Bearer ${token}` }
+      });
+
+      if (!res.ok) {
+        historialContainer.innerHTML = "<p>No se pudo cargar el historial.</p>";
+        return;
+      }
+
+      const compras = await res.json();
+      historialContainer.innerHTML = "";
 
       if (!Array.isArray(compras) || compras.length === 0) {
-        contenedor.innerHTML = "<p>No realizaste compras aún.</p>";
+        historialContainer.innerHTML = "<p>No realizaste compras aún.</p>";
         return;
       }
 
@@ -116,9 +139,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const div = document.createElement("div");
         div.classList.add("compra");
 
-        // Total de dinero
         const total = compra.items.reduce((acc, i) => acc + i.precio * i.cantidad, 0);
-        // Total de unidades
         const totalUnidades = compra.items.reduce((acc, i) => acc + i.cantidad, 0);
 
         div.innerHTML = `
@@ -126,26 +147,27 @@ document.addEventListener("DOMContentLoaded", () => {
             <h3>Compra #${index + 1} - ${new Date(compra.fecha).toLocaleString("es-AR", { dateStyle: 'short', timeStyle: 'short' })}</h3>
             <p>Total: $${total.toLocaleString("es-AR")} - Unidades: ${totalUnidades}</p>
             <ul>
-              ${compra.items.map(i => {
-                const precioNum = Number(i.precio); 
-                return `<li>${i.titulo} - ${i.artista} [x${i.cantidad}] ($${precioNum.toLocaleString("es-AR")})</li>`;
-              }).join("")}
+              ${compra.items.map(i => `<li>${i.titulo} - ${i.artista} [x${i.cantidad}] ($${Number(i.precio).toLocaleString("es-AR")})</li>`).join("")}
             </ul>
           </div>
         `;
-        contenedor.appendChild(div);
+        historialContainer.appendChild(div);
       });
-    })
-    .catch(err => {
+    } catch (err) {
       console.error("Error al cargar historial:", err);
-    });
+      historialContainer.innerHTML = "<p>Error al cargar historial de compras.</p>";
+    }
   }
 
+  // =============================
   // Eventos
+  // =============================
   document.getElementById("carritoBtn").addEventListener("click", mostrarCarrito);
   document.getElementById("cerrarCarrito").addEventListener("click", () => carrito.style.display = "none");
 
-  // Inicializar
+  // =============================
+  // Inicialización
+  // =============================
   actualizarContadores();
   cargarHistorial();
 });

@@ -19,7 +19,7 @@ function authMiddleware(req, res, next) {
   });
 }
 
-// POST: crear nuevas compras (una fila por disco)
+// Crear nuevas compras
 router.post("/", authMiddleware, async (req, res) => {
   const usuarioId = req.user.id;
   const { items } = req.body;
@@ -30,20 +30,26 @@ router.post("/", authMiddleware, async (req, res) => {
 
   try {
     for (const item of items) {
+      if (item.id === undefined || item.id === null ||
+        item.cantidad === undefined || item.cantidad === null ||
+        item.precio === undefined || item.precio === null) {
+        return res.status(400).json({ error: "Cada item debe tener id, cantidad y precio." });
+      }
+
       await connection.query(
         "INSERT INTO compras (usuario_id, disco_id, cantidad, precio, fecha) VALUES (?, ?, ?, ?, NOW())",
         [usuarioId, item.id, item.cantidad, item.precio]
       );
     }
 
-    res.json({ success: true });
+    return res.json({ success: true, message: "Compra registrada correctamente." });
   } catch (err) {
     console.error("Error en MySQL:", err.message);
-    res.status(500).json({ error: "Error al crear la compra." });
+    return res.status(500).json({ error: "Error al crear la compra." });
   }
 });
 
-// GET: obtener compras del usuario agrupadas por compra
+// Obtener compras del usuario
 router.get("/me", authMiddleware, async (req, res) => {
   const usuarioId = req.user.id;
 
@@ -58,7 +64,6 @@ router.get("/me", authMiddleware, async (req, res) => {
       [usuarioId]
     );
 
-    // Agrupar por fecha (cada fecha = una compra)
     const comprasMap = new Map();
     rows.forEach(row => {
       const key = row.fecha.toISOString();
@@ -74,11 +79,12 @@ router.get("/me", authMiddleware, async (req, res) => {
       });
     });
 
-    res.json(Array.from(comprasMap.values()));
+    return res.json(Array.from(comprasMap.values()));
   } catch (err) {
     console.error("Error en MySQL:", err.message);
-    res.status(500).json({ error: "Error al obtener las compras." });
+    return res.status(500).json({ error: "Error al obtener las compras." });
   }
 });
 
+// Exporto el modulo
 module.exports = router;

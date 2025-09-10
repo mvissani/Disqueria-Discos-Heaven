@@ -1,47 +1,23 @@
-// =============================
 // Variables globales
-// =============================
 window.discos = [];
 window.carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-
+let favoritos = [];
 let currentPage = 1;
-const limit = 8; // discos por página
+// Discos por página
+const limit = 8; 
 
-// =============================
 // Fetch de discos
-// =============================
 fetch("/cds")
   .then(res => res.json())
   .then(data => {
-    window.discos = data.discos || data; // <-- arreglo clave
+    window.discos = data.discos || data;
     const event = new CustomEvent("discosListos", { detail: window.discos });
     window.dispatchEvent(event);
   })
   .catch(err => console.error("Error al obtener discos:", err));
 
-// =============================
-// Funciones de carrito
-// =============================
-function agregarAlCarrito(disco) {
-  const itemExistente = window.carrito.find(i => i.id === disco.id);
-  if (itemExistente) itemExistente.cantidad++;
-  else window.carrito.push({ ...disco, cantidad: 1 });
 
-  localStorage.setItem("carrito", JSON.stringify(window.carrito));
-  mostrarMensajeFlotante(`"${disco.titulo}" se agregó correctamente al carrito!`);
-}
-
-function mostrarMensajeFlotante(texto) {
-  const mensaje = document.getElementById("mensajeFlotante");
-  if (!mensaje) return;
-  mensaje.textContent = texto;
-  mensaje.classList.add("visible");
-  setTimeout(() => mensaje.classList.remove("visible"), 2000);
-}
-
-// =============================
 // Mostrar discos con paginación
-// =============================
 function mostrarDiscos(listaDiscos) {
   const contenedor = document.getElementById("contenedor-discos");
   if (!contenedor) return;
@@ -50,27 +26,27 @@ function mostrarDiscos(listaDiscos) {
   const end = start + limit;
   const discosPagina = listaDiscos.slice(start, end);
 
-  contenedor.innerHTML = discosPagina.map(disco => `
-    <div class="disco" data-id="${disco.id}">
-      <img class="portada" src="${disco.img}" alt="${disco.titulo}">
-      <p class="titulo" style="color:${disco.color}">
-        <a href="/cd/${disco.slug}" style="color:${disco.color}; text-decoration: none">${disco.titulo}</a>
-      </p>
-      <p class="artista">${disco.artista}</p>
-      <span class="detalles" style="display:none;">
-        <a class="spotify" href="${disco.spotifyUrl}" target="_blank">
-          <i class="fa-brands fa-spotify"></i>
-        </a>
-        <p class="precio">$${Number(disco.precio).toLocaleString("es-AR")}</p>
-        <p class="totalcanciones">Cantidad de Canciones: ${disco.canciones}</p>
-        <p class="año">Año de Lanzamiento: ${disco.año}</p>
-        <button class="comprar" data-id="${disco.id}">Comprar</button>
-        <button class="favorito" data-id="${disco.id}">
-          <i class="fa-regular fa-star"></i>
-        </button>
-      </span>
-    </div>
-  `).join("");
+  contenedor.innerHTML = discosPagina.map(disco => {
+    const isFavorito = favoritos.some(f => Number(f.id) === Number(disco.id));
+    return `
+      <div class="disco" data-id="${disco.id}">
+        <img class="portada" src="${disco.img}" alt="${disco.titulo}">
+        <p class="titulo" style="color:${disco.color}">
+          <a href="/cd/${disco.slug}" style="color:${disco.color}; text-decoration:none">${disco.titulo}</a>
+        </p>
+        <p class="artista">${disco.artista}</p>
+        <span class="detalles" style="display:none;">
+          <button class="favorito" data-id="${disco.id}">
+            <i class="${isFavorito ? 'fa-solid' : 'fa-regular'} fa-star"></i>
+          </button>
+          <p class="precio">$${Number(disco.precio).toLocaleString("es-AR")}</p>
+          <p class="totalcanciones">Cantidad de Canciones: ${disco.canciones}</p>
+          <p class="año">Año de Lanzamiento: ${disco.año}</p>
+          <button class="comprar" data-id="${disco.id}">Comprar</button>
+        </span>
+      </div>
+    `;
+  }).join("");
 
   // Hover detalles
   document.querySelectorAll(".disco").forEach(d => {
@@ -79,13 +55,11 @@ function mostrarDiscos(listaDiscos) {
     d.addEventListener("mouseleave", () => { if (detalles) detalles.style.display = "none"; });
   });
 
-  inicializarFavoritos();
+  inicializarEventosDisco();
   renderPagination(listaDiscos.length);
 }
 
-// =============================
 // Paginación
-// =============================
 function renderPagination(totalDiscos) {
   let paginationDiv = document.getElementById("pagination");
   if (!paginationDiv) {
@@ -120,9 +94,7 @@ function renderPagination(totalDiscos) {
   }
 }
 
-// =============================
 // Filtrado por búsqueda
-// =============================
 function filteredDiscos() {
   const termino = document.getElementById("busqueda")?.value.toLowerCase() || "";
   return window.discos.filter(d =>
@@ -131,9 +103,7 @@ function filteredDiscos() {
   );
 }
 
-// =============================
-// Inicialización productos
-// =============================
+// Inicializar productos
 function inicializarProductos() {
   const contenedor = document.getElementById("contenedor-discos");
   if (!contenedor) return;
@@ -144,63 +114,121 @@ function inicializarProductos() {
   });
 
   contenedor.addEventListener("click", e => {
+    const idRaw = e.target.dataset.id;
+    // El id = 0 es valido
+    if (idRaw === undefined) return; 
+    const id = Number(idRaw);
+
     if (e.target.classList.contains("comprar")) {
-      const id = Number(e.target.dataset.id);
-      const disco = window.discos.find(d => d.id === id);
+      const disco = window.discos.find(d => Number(d.id) === id);
       if (!disco) return;
       agregarAlCarrito(disco);
+    }
+
+    if (e.target.classList.contains("favorito")) {
+      toggleFavorito(id, e.target);
     }
   });
 
   mostrarDiscos(filteredDiscos());
 }
 
-// =============================
+
 // Inicializar favoritos
-// =============================
-function inicializarFavoritos() {
-  const token = localStorage.getItem("token");
+async function inicializarFavoritos() {
+  const token = sessionStorage.getItem("token");
   if (!token) return;
 
-  fetch(`/api/favorites/me`, { headers: { "Authorization": `Bearer ${token}` } })
-    .then(res => res.json())
-    .then(favoritos => {
-      document.querySelectorAll(".favorito").forEach(btn => {
-        const discoId = Number(btn.dataset.id);
-        const icono = btn.querySelector("i");
-        if (favoritos.some(f => f.id === discoId)) {
-          icono.classList.replace("fa-regular", "fa-solid");
-        } else {
-          icono.classList.replace("fa-solid", "fa-regular");
-        }
-
-        btn.addEventListener("click", async () => {
-          try {
-            const res = await fetch("/api/favorites", {
-              method: "POST",
-              headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
-              body: JSON.stringify({ disco_id: discoId })
-            });
-            const data = await res.json();
-            const disco = window.discos.find(d => d.id === discoId);
-            const nombre = disco?.titulo || "Disco";
-
-            if (data.favorito) {
-              icono.classList.replace("fa-regular", "fa-solid");
-              mostrarMensajeFlotante(`"${nombre}" agregado a favoritos!`);
-            } else {
-              icono.classList.replace("fa-solid", "fa-regular");
-              mostrarMensajeFlotante(`"${nombre}" eliminado de favoritos!`);
-            }
-          } catch { alert("No se pudo actualizar el favorito."); }
-        });
-      });
+  try {
+    const res = await fetch("/api/favorites/me", {
+      headers: { "Authorization": `Bearer ${token}` }
     });
+
+    if (!res.ok) throw new Error("No autorizado");
+    const data = await res.json();
+    favoritos = Array.isArray(data) ? data : [];
+
+    document.querySelectorAll(".disco").forEach(discoEl => {
+      const idRaw = discoEl.dataset.id;
+      // El id = 0 es valido
+      if (idRaw === undefined) return;
+      const id = Number(idRaw);
+
+      const btn = discoEl.querySelector(".favorito i");
+      if (btn) {
+        btn.classList.toggle("fa-solid", favoritos.some(f => Number(f.id) === id));
+        btn.classList.toggle("fa-regular", !favoritos.some(f => Number(f.id) === id));
+      }
+    });
+  } catch (err) {
+    console.error("Error al obtener favoritos:", err);
+    favoritos = [];
+  }
 }
 
-// =============================
+// Delegación de eventos para favoritos
+document.body.addEventListener("click", async (e) => {
+  const btn = e.target.closest(".favorito");
+  if (!btn) return;
+
+  const idRaw = btn.dataset.id;
+  // El id = 0 es valido
+  if (idRaw === undefined) return; 
+  const discoId = Number(idRaw);
+
+  const token = sessionStorage.getItem("token");
+  if (!token) {
+    alert("Debes iniciar sesión para agregar favoritos.");
+    return;
+  }
+
+  try {
+    const res = await fetch("/api/favorites", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+      body: JSON.stringify({ disco_id: Number(discoId) })
+    });
+
+    if (!res.ok) throw new Error("No se pudieron actualizar los favoritos.");
+    const data = await res.json();
+
+    if (data.favorito) {
+      if (!favoritos.some(f => Number(f.id) === discoId)) favoritos.push({ id: discoId });
+    } else {
+      favoritos = favoritos.filter(f => Number(f.id) !== discoId);
+    }
+
+    const icon = btn.querySelector("i");
+    if (icon) {
+      icon.classList.toggle("fa-solid", data.favorito);
+      icon.classList.toggle("fa-regular", !data.favorito);
+    }
+
+    const mensaje = document.getElementById("mensajeFlotante");
+    if (mensaje) {
+      const nombreDisco = btn.closest(".disco").querySelector(".titulo")?.textContent || "";
+      mensaje.textContent = data.favorito
+        ? `${nombreDisco} agregado a favoritos!`
+        : `${nombreDisco} eliminado de favoritos.`;
+      mensaje.classList.add("visible");
+      setTimeout(() => mensaje.classList.remove("visible"), 2000);
+    }
+  } catch (err) {
+    console.error(err);
+    alert("Error al actualizar favoritos.");
+  }
+});
+
+// Inicializar eventos discos
+function inicializarEventosDisco() {
+  
+}
+
 // Escuchar evento discosListos
-// =============================
-window.addEventListener("discosListos", () => {
+window.addEventListener("discosListos", async () => {
+  await inicializarFavoritos(); 
   inicializarProductos();
 });

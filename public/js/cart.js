@@ -1,5 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // --- Carrito escritorio ---
+  // =============================
+  // Elementos DOM
+  // =============================
   const carritoBtn = document.getElementById("carritoBtn");
   const carrito = document.getElementById("carrito");
   const carritoItems = document.getElementById("carritoItems");
@@ -7,7 +9,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const subtotalCarrito = document.getElementById("subtotalCarrito");
   const contador = document.getElementById("carritoContador");
 
-  // --- Carrito móvil ---
   const carritoBtnMobile = document.getElementById("carritoBtnMobile");
   const carritoMobile = document.getElementById("carritoMobile");
   const carritoItemsMobile = document.getElementById("carritoItemsMobile");
@@ -15,17 +16,20 @@ document.addEventListener("DOMContentLoaded", () => {
   const subtotalCarritoMobile = document.getElementById("subtotalCarritoMobile");
   const contadorMobile = document.getElementById("carritoContadorMobile");
 
-  // Carrito desde localStorage
+  // =============================
+  // Datos del carrito
+  // =============================
   let carritoData = Array.isArray(JSON.parse(localStorage.getItem("carrito"))) 
                      ? JSON.parse(localStorage.getItem("carrito")) 
                      : [];
 
-  // Guardar carrito
+  // =============================
+  // Funciones auxiliares
+  // =============================
   function guardarCarrito() {
     localStorage.setItem("carrito", JSON.stringify(carritoData));
   }
 
-  // Actualizar contadores
   function actualizarContadores() {
     const total = carritoData.reduce((acc, item) => acc + (item.cantidad || 0), 0);
     [contador, contadorMobile].forEach(c => {
@@ -35,20 +39,25 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Actualizar subtotal
   function actualizarSubtotal() {
     const subtotal = carritoData.reduce((acc, item) => acc + ((item.precio || 0) * (item.cantidad || 0)), 0);
     const cantidadTotal = carritoData.reduce((acc, item) => acc + (item.cantidad || 0), 0);
 
-    if (subtotalCarrito) subtotalCarrito.innerHTML = `
-      <p>CANTIDAD DE ARTÍCULOS: ${cantidadTotal}</p>
-      <p>SUBTOTAL: $${subtotal.toLocaleString("es-AR")}</p>`;
-    if (subtotalCarritoMobile) subtotalCarritoMobile.innerHTML = `
-      <p>CANTIDAD DE ARTÍCULOS: ${cantidadTotal}</p>
-      <p>SUBTOTAL: $${subtotal.toLocaleString("es-AR")}</p>`;
+    if (subtotalCarrito) subtotalCarrito.innerHTML = `<p>CANTIDAD DE ARTÍCULOS: ${cantidadTotal}</p><p>SUBTOTAL: $${subtotal.toLocaleString("es-AR")}</p>`;
+    if (subtotalCarritoMobile) subtotalCarritoMobile.innerHTML = `<p>CANTIDAD DE ARTÍCULOS: ${cantidadTotal}</p><p>SUBTOTAL: $${subtotal.toLocaleString("es-AR")}</p>`;
   }
 
+  function mostrarMensajeFlotante(texto) {
+    const mensaje = document.getElementById("mensajeFlotante");
+    if (!mensaje) return;
+    mensaje.textContent = texto;
+    mensaje.classList.add("visible");
+    setTimeout(() => mensaje.classList.remove("visible"), 2000);
+  }
+
+  // =============================
   // Crear item del carrito
+  // =============================
   function crearItemCarrito(item) {
     const div = document.createElement("div");
     div.classList.add("item-carrito");
@@ -84,7 +93,9 @@ document.addEventListener("DOMContentLoaded", () => {
     return div;
   }
 
+  // =============================
   // Mostrar carrito
+  // =============================
   function mostrarCarrito(esMovil = false) {
     const contenedor = esMovil ? carritoItemsMobile : carritoItems;
     if (!contenedor) return;
@@ -96,16 +107,14 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       carritoData.forEach(item => contenedor.appendChild(crearItemCarrito(item)));
 
-      // Botón "Proceder al Pago"
       const botonPagar = document.createElement("button");
       botonPagar.textContent = "Proceder al Pago";
       botonPagar.id = "btnFinalizarCompra";
       botonPagar.style.marginTop = "10px";
       contenedor.appendChild(botonPagar);
 
-      // Evento click para finalizar compra
       botonPagar.addEventListener("click", async () => {
-        const token = localStorage.getItem("token");
+        const token = sessionStorage.getItem("token");
         if (!token) {
           alert("Debes iniciar sesión para comprar.");
           return;
@@ -136,7 +145,7 @@ document.addEventListener("DOMContentLoaded", () => {
             actualizarSubtotal();
             mostrarCarrito(true);
             mostrarCarrito(false);
-            alert("¡Orden realizada con éxito!");
+            mostrarMensajeFlotante("¡Compra realizada con éxito!");
           } else {
             const error = await res.json();
             alert("Error al procesar la orden: " + error.error);
@@ -153,13 +162,17 @@ document.addEventListener("DOMContentLoaded", () => {
     else carrito.style.display = "flex";
   }
 
+  // =============================
   // Cerrar carrito
+  // =============================
   function cerrarCarritoFunc(esMovil = false) {
     if (esMovil) carritoMobile.classList.remove("carrito-mobile-activo");
     else carrito.style.display = "none";
   }
 
-  // Cambiar cantidad respetando stock
+  // =============================
+  // Cambiar cantidad
+  // =============================
   function cambiarCantidad(id, nuevaCantidad) {
     const item = carritoData.find(i => i.id == id);
     if (!item) return;
@@ -175,7 +188,9 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll(`[data-id="${id}"].cantidad-texto`).forEach(span => span.textContent = item.cantidad);
   }
 
+  // =============================
   // Eliminar item
+  // =============================
   function eliminarDelCarrito(id) {
     carritoData = carritoData.filter(item => item.id != id);
     guardarCarrito();
@@ -184,12 +199,14 @@ document.addEventListener("DOMContentLoaded", () => {
     mostrarCarrito(false);
   }
 
-  // Eventos delegados botones (+, -, eliminar)
+  // =============================
+  // Eventos delegados (+, -, eliminar)
+  // =============================
   [carritoItems, carritoItemsMobile].forEach(contenedor => {
     if (!contenedor) return;
     contenedor.addEventListener("click", e => {
       const id = e.target.dataset.id;
-      if (!id) return;
+      if (id === undefined || id === null) return;
 
       if (e.target.classList.contains("mas")) cambiarCantidad(id, (carritoData.find(i => i.id == id)?.cantidad || 0) + 1);
       if (e.target.classList.contains("menos")) cambiarCantidad(id, (carritoData.find(i => i.id == id)?.cantidad || 0) - 1);
@@ -197,7 +214,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // Abrir/cerrar carritos
+  // =============================
+  // Abrir / Cerrar carritos
+  // =============================
   if (carritoBtn) carritoBtn.addEventListener("click", e => { e.preventDefault(); mostrarCarrito(false); });
   if (cerrarCarrito) cerrarCarrito.addEventListener("click", () => cerrarCarritoFunc(false));
   if (carrito) carrito.addEventListener("click", e => { if (e.target === carrito) cerrarCarritoFunc(false); });
@@ -206,16 +225,15 @@ document.addEventListener("DOMContentLoaded", () => {
   if (cerrarCarritoMobile) cerrarCarritoMobile.addEventListener("click", () => cerrarCarritoFunc(true));
   if (carritoMobile) carritoMobile.addEventListener("click", e => { if (e.target === carritoMobile) cerrarCarritoFunc(true); });
 
-  // Inicializar contador
-  actualizarContadores();
-
-  // Comprar disco desde productos
+  // =============================
+  // Comprar desde productos
+  // =============================
   document.body.addEventListener("click", e => {
     const btn = e.target.closest(".comprar");
     if (!btn) return;
 
-    const id = btn.dataset.id;
-    if (!id) return;
+    const id = Number(btn.dataset.id);
+    if (id === undefined || id === null) return;
 
     const disco = window.discos?.find(d => d.id == id);
     if (!disco || disco.stock <= 0) return;
@@ -246,16 +264,14 @@ document.addEventListener("DOMContentLoaded", () => {
     actualizarContadores();
     actualizarSubtotal();
 
-    // Refrescar carrito abierto
     if (carrito.style.display === "flex") mostrarCarrito(false);
     if (carritoMobile.classList.contains("carrito-mobile-activo")) mostrarCarrito(true);
 
-    // Mensaje flotante
-    const mensaje = document.getElementById("mensajeFlotante");
-    if (mensaje) {
-      mensaje.textContent = `"${disco.titulo}" se agregó al carrito!`;
-      mensaje.classList.add("visible");
-      setTimeout(() => mensaje.classList.remove("visible"), 2000);
-    }
+    mostrarMensajeFlotante(`"${disco.titulo}" se agregó al carrito!`);
   });
+
+  // =============================
+  // Inicializar contadores
+  // =============================
+  actualizarContadores();
 });

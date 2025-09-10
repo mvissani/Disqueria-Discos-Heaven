@@ -48,7 +48,6 @@ if (!discoSlug) {
           </div>
 
           <div class="disco-right">
-            
             <!-- Contenedor + Flechas -->
             <div class="img-container">
               <button class="izq"><i class="fa-solid fa-chevron-left"></i></button>

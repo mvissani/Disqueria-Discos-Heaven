@@ -4,6 +4,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const btnIzq = document.getElementById("izquierda");
   const btnDer = document.getElementById("derecha");
 
+  if (!carreteWrapper || !carrete || !btnIzq || !btnDer) return;
+
   let velocidad = 1;
   let isHover = false;
   let isClicking = false;
@@ -47,9 +49,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function moverDisco(direccion) {
     const discosElems = document.querySelectorAll(".disco");
-    const wrapperCenter = carreteWrapper.scrollLeft + carreteWrapper.offsetWidth / 2;
+    if (!discosElems.length) return;
 
+    const wrapperCenter = carreteWrapper.scrollLeft + carreteWrapper.offsetWidth / 2;
     let targetDisco;
+
     if (direccion === "izq") {
       for (let i = discosElems.length - 1; i >= 0; i--) {
         const discoCenter = discosElems[i].offsetLeft + discosElems[i].offsetWidth / 2;
@@ -91,6 +95,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const btn = e.target.closest(".comprar");
     if (!btn) return;
     const id = btn.dataset.id;
+    if (!id) return;
     const disco = window.discos?.find(d => d.id == id);
     if (!disco) return;
 

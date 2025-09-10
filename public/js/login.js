@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   const loginForm = document.getElementById("login-form");
-  if (!loginForm) return; 
+  if (!loginForm) return;
 
   const emailInput = document.getElementById("email");
   const passwordInput = document.getElementById("password");
@@ -27,31 +27,29 @@ document.addEventListener("DOMContentLoaded", () => {
         body: JSON.stringify({ email, password })
       });
 
-      const textoRespuesta = await res.text();
+      const data = await res.json(); 
       if (!res.ok) {
-        erroresDiv.textContent = textoRespuesta;
+        erroresDiv.textContent = data.msg || "Error al iniciar sesión";
         return;
       }
 
-      const data = JSON.parse(textoRespuesta);
+      console.log("Login recibido:", data);
 
-      console.log("Login recibido:", data); 
-
-      // Guardar correctamente en sessionStorage
+      // Guardar en sessionStorage
       sessionStorage.setItem("token", data.token || "");
-      sessionStorage.setItem("usuario_id", data.id !== undefined ? data.id : "");
-      sessionStorage.setItem("nombreUsuario", data.nombre || "");
-      sessionStorage.setItem("rolUsuario", data.rol || "");
-      sessionStorage.setItem("usuarioEmail", data.email || ""); 
+      sessionStorage.setItem("usuario", JSON.stringify(data.usuario || {}));
+      sessionStorage.setItem("usuario_id", data.usuario?.id || "");
+      sessionStorage.setItem("nombreUsuario", data.usuario?.nombre || "");
+      sessionStorage.setItem("rolUsuario", data.usuario?.rol || "");
+      sessionStorage.setItem("usuarioEmail", data.usuario?.email || "");
 
-      // Confirmamos que se guardó antes de redirigir
+      // Confirmación del correo
       console.log("Email del usuario desde sessionStorage:", sessionStorage.getItem("usuarioEmail"));
 
       if (sessionStorage.getItem("usuarioEmail")) {
         mensajeExito.style.display = "block";
-        mensajeExito.textContent = `¡Bienvenido ${data.nombre || ""}!`;
-        // Redirigir al home
-        window.location.href = "/";
+        mensajeExito.textContent = `¡Bienvenido ${data.usuario.nombre || ""}!`;
+        setTimeout(() => window.location.href = "/", 800); 
       } else {
         erroresDiv.textContent = "No se pudo guardar la sesión. Intente nuevamente.";
       }

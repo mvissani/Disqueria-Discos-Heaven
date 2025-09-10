@@ -1,9 +1,9 @@
 // Constantes
 const express = require("express");
 const { body, validationResult } = require("express-validator");
-
 const router = express.Router();
 
+// Ruta About Us
 router.post("/about-us", [
   body("email").isEmail().withMessage("Debe ser un email válido."),
   body("asunto").isLength({ min: 3 }).withMessage("El asunto es muy corto."),
@@ -18,4 +18,5 @@ router.post("/about-us", [
   res.json({ message: "Consulta recibida correctamente." });
 });
 
+// Exporto el modulo
 module.exports = router;

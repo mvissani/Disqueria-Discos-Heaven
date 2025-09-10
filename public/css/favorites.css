@@ -26,20 +26,20 @@ main {
 
 /* Card de disco favorito */
 .disco {
-  width: 220px;
-  min-height: 300px;
+  width: 240px;
+  height: 320px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
   background: #fff;
-  border-radius: 18px;
+  border-radius: 10px;
   transition: box-shadow 0.3s, transform 0.3s, background 0.3s, min-height 0.3s;
   box-shadow: none;
   cursor: pointer;
   position: relative;
-  padding: 12px;   /* ✅ da espacio para texto */
+  padding: 6px; 
 }
 
 .disco:hover {
@@ -61,18 +61,18 @@ main {
   height: 150px;
   object-fit: cover;
   border-radius: 12px;
-  margin: 8px 0px;
+  margin: 4px 0px;
 }
 
 /* Título y artista */
 .disco .titulo {
   font-size: 18px;
   font-weight: bold;
-  margin: 6px 0;
+  margin: 2px 0px;
   text-align: center;
   color: #222;
-  white-space: normal;     /* ✅ varias líneas */
-  word-wrap: break-word;   /* ✅ corta palabras largas */
+  white-space: normal;     
+  word-wrap: break-word;   
   overflow: visible;
   max-width: 90%;
 }
@@ -80,7 +80,7 @@ main {
 .disco .artista {
   font-size: 15px;
   color: #555;
-  margin: 4px 0 10px;
+  margin: 2px 0px 4px;
   text-align: center;
   white-space: normal;
   word-wrap: break-word;
@@ -133,178 +133,30 @@ main {
 }
 
 
+/* ---- RESPONSIVE ---- */
 
-/* ========================= */
-/* 📱 Responsive Favoritos   */
-/* ========================= */
-
-/* Main */
-main {
-  flex: 1 !important;
-  background-color: aliceblue !important;
-  margin: 10px;
-  padding: 20px 10px 10px 10px; /* padding top para separar del header */
-  border-radius: 10px;
-}
-
-/* Ajuste específico por tamaño de pantalla */
-@media (min-width: 769px) {
-  main {
-    padding-top: 80px; /* espacio para header escritorio */
-  }
-}
-
+/* 768px */
 @media (max-width: 768px) {
   main {
-    padding-top: 60px; /* espacio para header móvil */
+    padding-top: 60px; 
   }
-}
-
-/* Contenedor de favoritos */
-#contenedor-favoritos {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center;
-  align-items: center;
-}
-
-/* Título */
-.title {
-  margin-top: 10px;
-  margin-bottom: 0px;
-  text-align: center;
-  color: rgb(74, 123, 167);
-  font-size: 2rem;
-}
-
-/* Card de disco favorito */
-.disco {
-  width: 220px;
-  height: 300px;
-  box-sizing: border-box;
-  overflow: visible;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  background: #fff;
-  border-radius: 18px;
-  transition: box-shadow 0.3s, transform 0.3s, background 0.3s, min-height 0.3s;
-  box-shadow: none;
-  cursor: pointer;
-  position: relative;
-}
-
-.disco:hover {
-  transform: scale(1.04); 
-  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-}
-
-.disco.activo {
-  transform: scale(1.04) translateY(-4px);
-  outline: none !important;   
-  border: none !important;    
-  box-shadow: 0 8px 20px rgba(0,0,0,0.15); 
-  background: #fff; 
-}
-
-/* Portada */
-.disco .portada {
-  width: 150px;
-  height: 150px;
-  object-fit: cover;
-  border-radius: 12px;
-  margin: 8px 0px;
-}
-
-/* Título y artista */
-.disco .titulo {
-  font-size: 18px;
-  font-weight: bold;
-  margin: 4px 0px;
-  text-align: center;
-  word-break: break-word;
-  white-space: normal;
-}
-
-.disco .artista {
-  font-size: 15px;
-  color: #555;
-  margin-bottom: 8px;
-  text-align: center;
-}
-
-/* Botón de favorito */
-.toggle-fav {
-  background: none;
-  border: none;
-  font-size: 22px;
-  cursor: pointer;
-  margin-top: 2px;
-  color: #ffdd31;
-  transition: color 0.2s;
-}
-
-.toggle-fav:hover {
-  color: #898989;
-}
-
-/* Contenedor de favoritos en grid */
-.contenido {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 18px;
-  justify-content: center;
-  margin-top: 24px;
-}
-
-/* Mensaje flotante */
-.mensaje-flotante {
-  position: fixed;
-  bottom: 30px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #222;
-  color: #fff;
-  padding: 12px 24px;
-  border-radius: 12px;
-  font-size: 16px;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s;
-  z-index: 9999;
-}
-
-.mensaje-flotante.visible {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
   #contenedor-favoritos {
     gap: 12px;
   }
-
   .disco {
     width: 160px;
     height: 240px;
   }
-
   .disco .portada {
     width: 120px;
     height: 120px;
   }
-
   .disco .titulo {
     font-size: 16px;
   }
-
   .disco .artista {
     font-size: 14px;
   }
-
   .title {
     font-size: 1.5rem;
   }

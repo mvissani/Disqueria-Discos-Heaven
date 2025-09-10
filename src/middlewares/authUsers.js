@@ -1,28 +1,27 @@
+// Constantes
 const jwt = require("jsonwebtoken");
 
-function authMiddleware(req, res, next) {
+// Funcion para autenticar los permisos de los usuarios
+const authMiddleware = (req, res, next) => {
   const authHeader = req.headers["authorization"];
   if (!authHeader) return res.status(401).json({ error: "No autorizado" });
 
-  const token = authHeader.split(" ")[1]; // "Bearer TOKEN"
+  const token = authHeader.split(" ")[1];
   if (!token) return res.status(401).json({ error: "No autorizado" });
 
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded; // { id, rol }
+  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+    if (err) return res.status(401).json({ error: "Token inválido" });
+    req.user = user;
     next();
-  } catch (err) {
-    res.status(401).json({ error: "Token inválido" });
-  }
-}
+  });
+};
 
-function checkRole(role) {
-  return (req, res, next) => {
-    if (!req.user || req.user.rol !== role) {
-      return res.status(403).json({ error: "Acceso denegado" });
-    }
-    next();
-  };
-}
+// Funcion para revisar el rol del usuario
+const checkRole = (rol) => (req, res, next) => {
+  if (!req.user) return res.status(401).json({ error: "No autorizado" });
+  if (req.user.rol !== rol) return res.status(403).json({ error: "Acceso denegado" });
+  next();
+};
 
+// Exporto el modulo
 module.exports = { authMiddleware, checkRole };

@@ -1,12 +1,7 @@
-// =============================
-// favorites.js
-// =============================
-
-document.addEventListener("DOMContentLoaded", () => {
+(() => {
+  // Variables y contenedor
   const contenedorFavoritos = document.getElementById("contenedor-favoritos");
-  const token = localStorage.getItem("token");
-
-  if (!contenedorFavoritos) return;
+  let favoritos = [];
 
   // Función para mostrar mensaje flotante
   function mostrarMensajeFlotante(texto) {
@@ -17,72 +12,107 @@ document.addEventListener("DOMContentLoaded", () => {
     setTimeout(() => mensaje.classList.remove("visible"), 2000);
   }
 
-  // Función para cargar favoritos desde la API
-  // Cargar favoritos del usuario
-async function cargarFavoritos(usuario_id) {
-  if (!usuario_id) return [];
+  // Cargar favoritos desde backend
+  async function cargarFavoritos() {
+    if (!contenedorFavoritos) return;
 
-  try {
-    const res = await fetch("/api/favorites/me", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ usuario_id })
-    });
-
-    if (!res.ok) throw new Error("No se pudieron obtener los favoritos.");
-
-    const favoritos = await res.json();
-    return Array.isArray(favoritos) ? favoritos : [];
-  } catch (err) {
-    console.error("Error al cargar favoritos:", err);
-    return [];
-  }
-}
-
-// Inicializar botones de favoritos
-async function inicializarFavoritos(usuario_id) {
-  const favoritos = await cargarFavoritos(usuario_id);
-
-  document.querySelectorAll(".favorito").forEach(btn => {
-    const discoId = Number(btn.dataset.id);
-    const icono = btn.querySelector("i");
-
-    // Marcar favorito si corresponde
-    if (favoritos.some(f => f.id === discoId)) {
-      icono.classList.remove("fa-regular");
-      icono.classList.add("fa-solid");
-    } else {
-      icono.classList.remove("fa-solid");
-      icono.classList.add("fa-regular");
+    const token = sessionStorage.getItem("token");
+    if (!token) {
+      contenedorFavoritos.innerHTML = "<p>Debes iniciar sesión para ver tus favoritos.</p>";
+      return;
     }
 
-    // Click para toggle
-    btn.addEventListener("click", async () => {
+    try {
+      const res = await fetch("/api/favorites/me", {
+        headers: { "Authorization": `Bearer ${token}` }
+      });
+
+      if (!res.ok) throw new Error("No autorizado");
+
+      favoritos = await res.json();
+
+      contenedorFavoritos.innerHTML = "";
+
+      if (!Array.isArray(favoritos) || favoritos.length === 0) {
+        contenedorFavoritos.innerHTML = "<p>No tienes discos favoritos aún.</p>";
+        return;
+      }
+
+      favoritos.forEach(disco => {
+        const card = document.createElement("div");
+        card.className = "card favorito-item";
+        card.dataset.id = disco.id; // siempre poner id incluso si es 0
+        card.innerHTML = `
+          <div class="disco">
+            <a href="/cd/${disco.slug}">
+              <img class="portada" src="${disco.img}" alt="${disco.titulo}">
+            </a>
+            <button class="toggle-fav" data-id="${disco.id}">
+              <i class="fa-solid fa-star"></i>
+            </button>
+            <div class="titulo">${disco.titulo}</div>
+            <div class="artista">${disco.artista}</div>
+          </div>
+        `;
+        contenedorFavoritos.appendChild(card);
+      });
+
+    } catch (err) {
+      console.error("Error al cargar favoritos:", err);
+      contenedorFavoritos.innerHTML = "<p>Error al cargar favoritos.</p>";
+    }
+  }
+
+  // Delegación de eventos para toggle de favoritos
+  if (contenedorFavoritos) {
+    contenedorFavoritos.addEventListener("click", async (e) => {
+      const btn = e.target.closest(".toggle-fav");
+      if (!btn) return;
+
+      const discoId = Number(btn.dataset.id); // asegurar tipo number
+      const token = sessionStorage.getItem("token");
+
+      if (!token) {
+        alert("Debes iniciar sesión para agregar favoritos.");
+        return;
+      }
+
       try {
         const res = await fetch("/api/favorites", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ usuario_id, disco_id: discoId })
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+          },
+          body: JSON.stringify({ disco_id: discoId })
         });
 
-        if (!res.ok) throw new Error("Error al actualizar los favoritos.");
+        if (!res.ok) throw new Error("Error al actualizar favorito");
 
         const data = await res.json();
-        if (data.favorito) {
-          icono.classList.remove("fa-regular");
-          icono.classList.add("fa-solid");
+        const nombre = btn.closest(".favorito-item").querySelector(".titulo")?.textContent || "";
+
+        if (!data.favorito) {
+          // eliminar correctamente incluso si id = 0
+          const item = btn.closest(".favorito-item");
+          if (item) item.remove();
+          mostrarMensajeFlotante(`"${nombre}" fue eliminado de favoritos.`);
         } else {
-          icono.classList.remove("fa-solid");
-          icono.classList.add("fa-regular");
+          mostrarMensajeFlotante(`"${nombre}" fue agregado a favoritos.`);
         }
+
+        // Mostrar mensaje si no quedan favoritos
+        if (contenedorFavoritos.children.length === 0) {
+          contenedorFavoritos.innerHTML = "<p>No tienes discos favoritos aún.</p>";
+        }
+
       } catch (err) {
         console.error(err);
-        alert("No se pudo actualizar el favorito. Intente nuevamente.");
+        alert("Error al actualizar favoritos");
       }
     });
-  });
-}
+  }
 
-  // Inicializar
-  cargarFavoritos();
-});
+  // Inicializar al cargar la página
+  document.addEventListener("DOMContentLoaded", cargarFavoritos);
+})();

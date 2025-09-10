@@ -76,5 +76,5 @@ router.get("/contact-us", (req, res) => {
   res.sendFile(path.join(__dirname, "../views/contactus.html"));
 });
 
-// Exportar modulo
+// Exporto el modulo
 module.exports = router

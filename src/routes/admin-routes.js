@@ -1,10 +1,10 @@
 // Constantes
 const express = require("express");
 const connection = require("../database/discos-database");
-const { authMiddleware, checkRole } = require("../middlewares/auth");
+const { authMiddleware, checkRole } = require("../middlewares/authUsers"); 
 const router = express.Router();
 
-// Crear un disco nuevo (solo admin)
+// Crear un disco nuevo 
 router.post("/cds", authMiddleware, checkRole("admin"), async (req, res) => {
   const { titulo, descripcion } = req.body;
 
@@ -20,5 +20,5 @@ router.post("/cds", authMiddleware, checkRole("admin"), async (req, res) => {
   }
 });
 
-// Exportar modulo
+// Exporto el modulo
 module.exports = router;
