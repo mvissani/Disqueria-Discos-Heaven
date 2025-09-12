@@ -44,7 +44,7 @@
         card.dataset.id = disco.id; // siempre poner id incluso si es 0
         card.innerHTML = `
           <div class="disco">
-            <a href="/cd/${disco.slug}">
+            <a href="/product/${disco.slug}">
               <img class="portada" src="${disco.img}" alt="${disco.titulo}">
             </a>
             <button class="toggle-fav" data-id="${disco.id}">

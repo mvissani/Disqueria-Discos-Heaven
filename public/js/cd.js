@@ -9,7 +9,7 @@ window.carrito = JSON.parse(localStorage.getItem("carrito")) || [];
 if (!discoSlug) {
   contenedor.innerHTML = "<p>Disco no encontrado.</p>";
 } else {
-  fetch(`/api/cd/${discoSlug}`)
+  fetch(`/api/products/${discoSlug}`)
     .then(res => {
       if (!res.ok) throw new Error("Disco no encontrado");
       return res.json();

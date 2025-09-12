@@ -1,6 +1,6 @@
 async function cargarPopulares() {
   try {
-    const res = await fetch("/cds/popular");
+    const res = await fetch("/api/products/popular");
     const discos = await res.json();
 
     const contenedor = document.getElementById("lista-populares");
@@ -12,7 +12,7 @@ async function cargarPopulares() {
 
     contenedor.innerHTML = discos.map(disco => `
       <div class="card-popular">
-        <a href="/cd/${disco.slug}"><img src="${disco.img}" alt="${disco.titulo}"></a>
+        <a href="/product/${disco.slug}"><img src="${disco.img}" alt="${disco.titulo}"></a>
         <h2 style="color:${disco.color}">${disco.titulo}</h2>
         <p>${disco.artista}</p>
         <p>Precio: $${Number(disco.precio).toLocaleString("es-AR")}</p>

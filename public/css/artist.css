@@ -1,0 +1,122 @@
+/* Main */
+main {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  margin: 40px 10px 40px 10px;
+  background-color: aliceblue !important;
+  border-radius: 10px;
+}
+
+/* Nombre del Artista */
+.nombre-artista {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #4c7db5;
+}
+
+/* Contenedor de discos en grilla */
+#artistaInd {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); 
+  justify-items: center;
+}
+
+/* Disco */
+.disco-individual {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  text-align: center;
+  padding: 15px;
+  transition: transform 0.2s ease-in-out;
+  width: 250px;
+  height: 420px;
+  margin-bottom: 60px;
+}
+
+.disco-individual img.portada {
+  width: 200px;
+  height: 200px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.disco-individual h2 {
+  font-size: 1.2rem;
+  margin: 10px 0;
+  color: #333;
+}
+
+.disco-individual p {
+  margin: 5px 0;
+  color: #666;
+}
+
+/* Efecto del Disco */
+.disco-individual:hover {
+  transform: translateY(-5px);
+}
+
+/* Hover del Boton Comprar */
+.disco-individual .comprar {
+  margin-top: 10px;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 8px;
+  background: #29ac71;
+  color: white;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.disco-individual .comprar:hover {
+  background: #5bbdc4;
+}
+
+
+/* ---- RESPONSIVE ---- */
+
+/* 992px */
+@media (max-width: 992px) {
+  .nombre-artista {
+    margin-top: 30px;
+    font-size: 2rem;
+  }
+  #artistaInd {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+  }
+  .disco-individual {
+    height: 380px;
+  }
+  .disco-individual img.portada {
+    width: 160px;
+    height: 160px;
+  }
+}
+
+/* 576px */
+@media (max-width: 576px) {
+  .nombre-artista {
+    font-size: 1.5rem;
+  }
+  #artistaInd {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px;
+  }
+  .disco-individual {
+    height: 350px;
+    padding: 10px;
+  }
+  .disco-individual img.portada {
+    width: 120px;
+    height: 120px;
+  }
+  .disco-individual h2 {
+    font-size: 1rem;
+  }
+}

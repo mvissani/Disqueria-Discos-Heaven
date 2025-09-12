@@ -11,7 +11,8 @@
   <title> Discos Heaven </title>
   <!-- Hojas de Estilo -->
   <link rel="stylesheet" href="/css/general.css">
-  <link rel="stylesheet" href="/css/home.css">
+  <link rel="stylesheet" href="/css/products.css">
+  <link rel="stylesheet" href="/css/artist.css">
   <link rel="stylesheet" href="/css/cart.css">
   <!-- Iconos -->
   <script src="https://kit.fontawesome.com/fd9bb0cd18.js" crossorigin="anonymous"></script>
@@ -189,22 +190,8 @@
 
   <!-- Main -->
   <main>
-    <h2 class="title">Nuestros Productos</h2>
-    <div class="carrusel-centrado">
-      <button id="izquierda" class="flecha"><i class="fa-solid fa-arrow-left"></i></button>
-      <div class="carrete-wrapper">
-        <div class="carrete" id="carrete"></div>
-      </div>
-      <button id="derecha" class="flecha"><i class="fa-solid fa-arrow-right"></i></button>
-    </div>
-    <h2 class="title">Nuestros Artistas</h2>
-    <div class="carrusel-centrado">
-      <button id="izquierda-artistas" class="flecha"><i class="fa-solid fa-arrow-left"></i></button>
-      <div class="carrete-wrapper">
-        <div class="carrete" id="carrete-artistas"></div>
-      </div>
-      <button id="derecha-artistas" class="flecha"><i class="fa-solid fa-arrow-right"></i></button>
-    </div>
+    <h2 class="nombre-artista"></h2>
+    <div id="artistaInd"></div>
   </main>
 
   <!-- Footer Escritorio -->
@@ -239,9 +226,10 @@
   <div id="mensajeFlotante" class="mensaje-flotante"></div>
 
   <!-- Scripts --> 
-  <script src="/js/general.js"></script> 
-  <script src="/js/home.js"></script>  
+  <script src="/js/artist.js"></script>
+  <script src="/js/products.js"></script>
   <script src="/js/cart.js"></script>
+  <script src="/js/general.js"></script> 
 </body>
 
 </html>

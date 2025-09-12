@@ -5,35 +5,16 @@
   margin-top: 2%;
 }
 
-.boton-buscar {
-  width: 30px;
-  height: 35px;
-  border-radius: 10px;
-  margin-left: 6px;
-}
-
-input#busqueda {
-  width: 200px;
-  height: 12px;
-  border-radius: 10px;
-}
-
+/* Contenido de la Barra de Busqueda */
 .buscar input#busqueda {
-  width: 220px;
-  padding: 6px 12px;
-  border-radius: 10px;
-  border: 2px solid #00178d;;
-  outline-offset: 2px;
-}
-
-#busqueda {
   width: 240px !important; 
   height: 36px !important;
-  padding: 8px 12px;
+  padding: 6px 12px;
   border-radius: 10px;
+  border: 2px solid #000000;;
 }
 
-/* Disco y sus Detalles */
+/* Disco */
 .disco {
   width: 220px;
   max-height: 600px;
@@ -53,21 +34,7 @@ input#busqueda {
   padding: 10px 6px 12px 6px;
 }
 
-.disco:hover {
-  transform: scale(1.04); 
-  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-  transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.disco.activo {
-  transform: scale(1.04) translateY(-4px);
-  transition: transform 0.3s, box-shadow 0.3s;
-  outline: none !important;   
-  border: none !important;    
-  box-shadow: 0 8px 20px rgba(0,0,0,0.15); 
-  background: #fff; 
-}
-
+/* Nombre del Disco */
 .disco .titulo {
   font-size: 18px;
   font-weight: bold;
@@ -83,6 +50,7 @@ input#busqueda {
   justify-content: center;
 }
 
+/* Artista del Disco */
 .disco .artista {
   font-size: 16px;
   margin: 0 0 6px 0;
@@ -92,6 +60,7 @@ input#busqueda {
   max-width: 95%;
 }
 
+/* Tapa del Disco */
 .portada {
   height: 180px;
   width: 180px;
@@ -99,6 +68,22 @@ input#busqueda {
   display: block;
   margin: 0 auto 4px auto;
   border-radius: 10px;
+}
+
+/* Efectos del Disco */
+.disco:hover {
+  transform: scale(1.04); 
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.disco.activo {
+  transform: scale(1.04) translateY(-4px);
+  transition: transform 0.3s, box-shadow 0.3s;
+  outline: none !important;   
+  border: none !important;    
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15); 
+  background: #fff; 
 }
 
 /* Discos */
@@ -131,6 +116,7 @@ input#busqueda {
   text-align: center;
 }
 
+/* Efecto del Boton Comprar */
 #comprar:hover, .comprar:hover {
   background-color: #17b957;
   box-shadow: 0 4px 16px rgba(30,215,96,0.18);
@@ -175,6 +161,7 @@ input#busqueda {
   opacity: 1;
 }
 
+/* Estrella Favoritos */
 .favorito {
   border: none;
   background-color: transparent;
@@ -183,7 +170,7 @@ input#busqueda {
   transition: color 0.2s;
 }
 
-/* ---- PAGINACIÓN ---- */
+/* Paginacion */
 #pagination {
   display: flex;
   justify-content: center;
@@ -192,6 +179,7 @@ input#busqueda {
   flex-wrap: wrap;
 }
 
+/* Botones de las Paginas */
 #pagination button {
   border: none;
   background-color: #00178d;
@@ -203,6 +191,7 @@ input#busqueda {
   transition: background 0.2s, transform 0.1s;
 }
 
+/* Efectos en los Botones de las Paginas */
 #pagination button:hover:not(:disabled) {
   background-color: #70c3ff;
   transform: translateY(-2px) scale(1.05);
@@ -214,9 +203,10 @@ input#busqueda {
   transform: none;
 }
 
+
 /* ---- RESPONSIVE ---- */
 
-/* Hasta 1024px */
+/* 1024px */
 @media (max-width: 1024px) {
   #contenedor-discos {
     display: flex;
@@ -227,7 +217,7 @@ input#busqueda {
   }
 }
 
-/* Hasta 768px */
+/* 768px */
 @media (max-width: 768px) {
   main {
     position: relative; 
@@ -276,7 +266,7 @@ input#busqueda {
   }
 }
 
-/* Hasta 480px */
+/* 480px */
 @media (max-width: 480px) {
   .disco h3 {
     font-size: 0.95rem;

@@ -1,9 +1,17 @@
+/* Main */
 main {
   align-content: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
-/* Carrusel */
+/* Titulo Nuestros Productos */
+.title {
+  color: #3063a0;
+  text-align: center;
+}
 
+/* Carrusel de Productos */
 .carrusel-centrado {
   display: flex;
   align-items: center;
@@ -22,6 +30,7 @@ main {
   gap: 30px; 
 }
 
+/* Disco */
 .disco {
   background-color: transparent !important;
   display: flex;
@@ -32,8 +41,10 @@ main {
   transition: all 0.3s;
   overflow: visible;
   position: relative;
+  border-radius: 10px;
 }
 
+/* Portada Disco */
 .disco img {
   width: 220px;
   height: 220px;
@@ -42,9 +53,10 @@ main {
   transition: transform 0.3s;
 }
 
+/* Nombre Disco + Nombre Artista */
 .disco-info {
   position: absolute;
-  top: 55%; 
+  top: 52%; 
   left: 50%;
   width: 232px; 
   height: 234px; 
@@ -62,6 +74,7 @@ main {
   transform: translate(-50%, -50%);
 }
 
+/* Efecto Hover para la Portada de los Discos */
 .disco:hover img {
  transform: scale(1.05);
 }
@@ -71,11 +84,61 @@ main {
   z-index: 2;
 }
 
-/* Flechas */
+/* Artista */
+.artista {
+  background-color: transparent;
+  display: flex;
+  flex-direction: column;
+  width: 220px;
+  height: 220px;
+  cursor: pointer;
+  transition: all 0.3s;
+  overflow: visible;
+  position: relative;
+  border-radius: 10px;
+}
+
+/* Imagen Artista */
+.artista img {
+  width: 220px;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 10px;
+  transition: transform 0.3s;
+}
+
+/* Overlay sobre la Imagen del Artista */
+.artista .overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 232px;
+  height: 234px;
+  background: rgba(0,0,0,0.6);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.3s;
+}
+
+/* Efecto Hover para la Imagen de los Artistas */
+.artista:hover img {
+  transform: scale(1.05);
+}
+
+.artista:hover .overlay {
+  opacity: 1;
+}
+
+/* Flechas del Carrusel de Discos */
 .flecha {
   background: transparent;
   border: none;
-  color: rgb(21, 136, 146);
+  color: rgb(62, 122, 171);
   font-size: 30px;
   cursor: pointer;
   padding: 10px;
@@ -83,84 +146,26 @@ main {
   transition: background 0.3s;
 }
 
-/* Discos */
-.disco {
-  width: 220px;
-  max-height: 220px;
-  box-sizing: border-box;
-  overflow: visible;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  background: #fffef0;
-  border-radius: 18px;
-  transition: box-shadow 0.3s, transform 0.3s, background 0.3s, min-height 0.3s;
-  box-shadow: none;
-  cursor: pointer;
-  position: relative;
-  margin: 10px 0;
-  padding: 10px 6px 12px 6px;
-}
-
-.disco.activo {
-  box-shadow: 0 8px 32px 0 rgba(0,0,0,0.18), 0 4px 24px rgba(0,0,0,0.10);
-  background: #fffbe6;
-  border: 2px solid #e0e0e0;
-  transform: scale(1.04) translateY(-4px);
-  filter: brightness(1.07) saturate(1.05);
-  transition: all 0.3s;
-}
-
-.disco .titulo {
-  font-size: 18px;
-  font-weight: bold;
-  margin: 3px 0 2px 0;
-  text-align: center;
-  word-break: break-word;
-  white-space: normal;
-  min-height: 2em;
-  max-width: 95%;
-  line-height: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: "Times New Roman"; 
-}
-
-.disco .artista {
-  font-size: 16px;
-  margin: 0 0 6px 0;
-  text-align: center;
-  word-break: break-word;
-  white-space: normal;
-  max-width: 95%;
-  font-family: "Times New Roman"; 
-}
-
-
-/* Comprar */
-
+/* Icono de Carrito */
 .comprar {
   border: none;
   color: #fff;
   background-color: transparent;
   font-size: 1rem;
   font-weight: bold;
-  box-shadow: 0 2px 8px rgba(30,215,96,0.08);
   cursor: pointer;
-  transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+  transition: background 0.2s, transform 0.1s;
   display: block;
   text-align: center;
 }
 
+/* Efecto Hover para el Icono de Carrito */
 .comprar:hover {
   color: #17b957;
-  box-shadow: 0 4px 16px rgba(30,215,96,0.18);
   transform: translateY(-2px) scale(1.04);
 }
 
-/* Mensaje de Confirmacion */
+/* Mensaje de confirmacion */
 .mensaje-flotante {
   position: fixed;
   bottom: 20px;
@@ -180,3 +185,86 @@ main {
 .mensaje-flotante.visible {
   opacity: 1;
 }
+
+
+/* ---- RESPONSIVE ---- */
+
+/* 992px */
+@media (max-width: 992px) {
+  .carrete {
+    gap: 20px;
+  }
+}
+
+/* 768px */
+@media (max-width: 768px) {
+  .carrete {
+    gap: 15px;
+  }
+  .carrusel-centrado {
+    justify-content: flex-start; 
+  }
+  .disco {
+    flex: 0 0 auto; 
+    width: 150px;
+    height: 150px;
+    padding: 6px 3px 8px 3px;
+    overflow: visible;      
+    margin-bottom: 20px;    
+    position: relative;     
+    transition: transform 0.3s;
+    background-color: transparent !important;
+  }
+  .disco img {
+    width: 150px;
+    height: 150px;
+    border-radius: 10px;   
+    transition: transform 0.3s;
+  }
+  .disco::before {
+    width: 100%; 
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+  }
+  .disco:hover::before {
+    opacity: 1;
+  }
+  .disco:hover img {
+    transform: scale(1.05);
+  }
+  .disco-info {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 159px;          
+    height: 158px;         
+    transform: translate(-48%, -46%); 
+    font-size: 12px;
+    background: rgba(0,0,0,0.6);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    z-index: 3;
+    transition: opacity 0.3s;
+  }
+  .disco:hover .disco-info {
+    opacity: 1;
+  }
+  .carrete-wrapper {
+    overflow-x: auto;                  
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch; 
+    padding-bottom: 10px;
+    scrollbar-width: none;             
+  }
+  .carrete-wrapper::-webkit-scrollbar {
+    display: none;                     
+  }
+}
+
+

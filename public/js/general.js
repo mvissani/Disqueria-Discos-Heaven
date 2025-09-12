@@ -3,11 +3,11 @@ window.discos = [];
 window.carrito = JSON.parse(localStorage.getItem("carrito")) || [];
 
 // Fetch de discos
-fetch("/cds")
+fetch("/api/products")
   .then(res => res.json())
   .then(data => {
     window.discos = data;
-    window.discos.forEach(disco => disco.apiUrl = `/api/cd/${disco.id}`);
+    window.discos.forEach(disco => disco.apiUrl = `/api/product/${disco.id}`);
     const event = new CustomEvent("discosListos", { detail: window.discos });
     window.dispatchEvent(event);
     if (typeof inicializarProductos === "function") inicializarProductos();

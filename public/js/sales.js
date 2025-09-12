@@ -1,6 +1,6 @@
 async function cargarOfertas() {
   try {
-    const res = await fetch("/cds/offers");
+    const res = await fetch("/api/products/offers");
     const discos = await res.json();
 
     const contenedor = document.getElementById("lista-ofertas");
@@ -12,7 +12,7 @@ async function cargarOfertas() {
 
     contenedor.innerHTML = discos.map(disco => `
       <div class="card-oferta">
-        <a href="/cd/${disco.slug}"><img src="${disco.img}" alt="${disco.titulo}"></a>
+        <a href="/product/${disco.slug}"><img src="${disco.img}" alt="${disco.titulo}"></a>
         <h2 style="color:${disco.color}">${disco.titulo}</h2>
         <p>${disco.artista}</p>
         <p>${disco.canciones} canciones</p>

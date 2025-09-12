@@ -1,37 +1,59 @@
+/* Main */
 main {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 130px); 
+  margin-top: 80px;     
+  margin-bottom: 50px;  
+  box-sizing: border-box;
 }
 
+/* Titulo Preguntas Frecuentes */
 .title {
-    color: #134e97;
+  color: #134e97;
 }
 
+/* Preguntas */
 h3 {
-    color:rgb(58, 149, 150);
+  color: rgb(58, 149, 150);
 }
 
+/* Contenedor */
 .help-content {
-    background-color: aliceblue !important;
-    width: 1050px;
-    display: flex;
-    border-radius: 10px;
-    flex-direction: column;
-    text-align: center;
-    height: 315px;
-    padding: 6px 2px;
+  background-color: aliceblue !important;
+  max-width: 1050px;       
+  width: 100%;              
+  display: flex;
+  border-radius: 10px;
+  flex-direction: column;
+  text-align: center;
+  padding: 16px;            
+  box-sizing: border-box;   
 }
 
+/* Link */
 .link {
-    padding-left: 0px !important;
+  padding-left: 0px !important;
 }
+
 
 /* ---- RESPONSIVE ---- */
 
+/* 992px */
+@media (max-width: 992px) {
+  .help-content {
+    padding: 12px;
+  }
+}
+
+/* 768px */
 @media (max-width: 768px) {
   .help-content {
-    height: fit-content;
-    width: fit-content;
+    max-width: 90%;     
+    height: auto;       
+    padding: 10px;
+    margin-top: 40px;
+    margin-bottom: 40px; 
   }
 }

@@ -7,7 +7,7 @@ let currentPage = 1;
 const limit = 8; 
 
 // Fetch de discos
-fetch("/cds")
+fetch("/api/products")
   .then(res => res.json())
   .then(data => {
     window.discos = data.discos || data;
@@ -32,7 +32,7 @@ function mostrarDiscos(listaDiscos) {
       <div class="disco" data-id="${disco.id}">
         <img class="portada" src="${disco.img}" alt="${disco.titulo}">
         <p class="titulo" style="color:${disco.color}">
-          <a href="/cd/${disco.slug}" style="color:${disco.color}; text-decoration:none">${disco.titulo}</a>
+          <a href="/products/${disco.slug}" style="color:${disco.color}; text-decoration:none">${disco.titulo}</a>
         </p>
         <p class="artista">${disco.artista}</p>
         <span class="detalles" style="display:none;">

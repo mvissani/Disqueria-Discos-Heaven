@@ -1,151 +1,91 @@
-// Cargar variables de entorno
+// Cargar variables de entorno 
 require("dotenv").config(); 
 
-// Constantes
+// Constantes 
 const express = require("express");
 const path = require("path");
 const methodOverride = require("method-override");
-// Base de datos
+
+// Base de datos 
 const connection = require("./database/discos-database"); 
-// Livereload
+
+// Livereload 
 const livereload = require("livereload");
 const connectLivereload = require("connect-livereload");
-// Routers
+
+// Routers 
 const indexRouter = require("./routes/index-routes");
 const usersRouter = require("./routes/users-routes"); 
 const adminRouter = require("./routes/admin-routes");
 const aboutusRouter = require("./routes/aboutus-routes");
 const favoritesRouter = require("./routes/favorites-routes");
 const myordersRouter = require("./routes/myorders-routes");
+const productsRouter = require("./routes/products-routes");
+const artistsRouter = require("./routes/artists-routes"); 
 
-// Express
+// Express 
 const app = express();
 
-// VISTAS
+// Vistas 
 app.set("views", path.resolve(__dirname, "./src/views"));
 
-// Archivos estáticos
+// Archivos estáticos 
 app.use(express.static(path.resolve(__dirname, "./public")));
 
-// URL ENCODE / JSON
+// Parseo de requests 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(methodOverride("_method"));
 
-// SERVIDOR LIVERELOAD
+// Servidor Livereload 
 const liveReloadServer = livereload.createServer();
-liveReloadServer.watch(path.join(__dirname, "views")); 
+liveReloadServer.watch(path.join(__dirname, "src/views")); 
 app.use(connectLivereload());
 
-// RUTAS
-// Todos los discos
-app.get("/cds", async (req, res) => {
-  try {
-    const [results] = await connection.query(`SELECT * FROM discos ORDER BY titulo ASC`);
-    res.json(Array.isArray(results) ? results : []);
-  } catch (err) {
-    console.error("Error en MySQL:", err.message);
-    res.status(500).json({ error: err.message });
-  }
-});
-
-// Discos con descuento
-app.get("/cds/offers", async (req, res) => {
-  try {
-    const [results] = await connection.query(
-      `SELECT * FROM discos WHERE descuento > 0 ORDER BY titulo ASC`
-    );
-    res.json(results);
-  } catch (err) {
-    console.error("Error en MySQL:", err.message);
-    res.status(500).json({ error: err.message });
-  }
-});
-
-// Discos recomendados
-app.get("/cds/recommendations", async (req, res) => {
-  try {
-    const [results] = await connection.query(
-      `SELECT * FROM discos WHERE recomendado = 1 ORDER BY titulo ASC`
-    );
-    res.json(results);
-  } catch (err) {
-    console.error("Error en MySQL:", err.message);
-    res.status(500).json({ error: err.message });
-  }
-});
-
-// Discos populares
-app.get("/cds/popular", async (req, res) => {
-  try {
-    const [results] = await connection.query(
-      `SELECT * FROM discos WHERE mas_vendido = 1 ORDER BY titulo ASC`
-    );
-    res.json(results);
-  } catch (err) {
-    console.error("Error en MySQL:", err.message);
-    res.status(500).json({ error: err.message });
-  }
-});
-
-// Disco por slug con canciones
-app.get("/api/cd/:slug", async (req, res) => {
-  const { slug } = req.params;
-
-  try {
-    const [discos] = await connection.query("SELECT * FROM discos WHERE slug = ?", [slug]);
-    if (discos.length === 0) return res.status(404).json({ error: "Disco no encontrado" });
-
-    const disco = discos[0];
-
-    const [canciones] = await connection.query(
-      "SELECT titulo FROM canciones WHERE disco_id = ? ORDER BY id ASC",
-      [disco.id]
-    );
-
-    disco.canciones_detalle = canciones;
-
-    res.json(disco);
-  } catch (err) {
-    console.error("Error en MySQL:", err.message);
-    res.status(500).json({ error: err.message });
-  }
-});
-
-// Favoritos
+// Rutas HTML 
 app.get("/my-favorites", (req, res) => {
-  res.sendFile(path.join(__dirname, "views", "myfavorites.html"));
+  res.sendFile(path.join(__dirname, "/views/myfavorites.html"));
 });
 
-// Mis Compras
 app.get("/my-orders", (req, res) => {
-  res.sendFile(path.join(__dirname, "views", "myorders.html"));
+  res.sendFile(path.join(__dirname, "/views/myorders.html"));
 });
 
-// Artistas
 app.get("/artists", (req, res) => {
-  res.sendFile(path.join(__dirname, "views", "artists.html"));
+  res.sendFile(path.join(__dirname, "/views/artists.html"));
 });
 
-// API de ordenes
+app.get("/products", (req, res) => {
+  res.sendFile(path.join(__dirname, "/views/products.html"));
+});
+
+app.get("/products/:slug", (req, res) => {
+  res.sendFile(path.join(__dirname, "/views/cd.html"));
+});
+
+app.get("/artists/:slug", (req, res) => {
+  res.sendFile(path.join(__dirname, "/views/artist.html"));
+});
+
+// Rutas API 
 app.use("/api/myorders", myordersRouter);
-
-// API de favoritos
 app.use("/api/favorites", favoritesRouter);
+app.use("/api/products", productsRouter);
+app.use("/api/artists", artistsRouter);
 
-// OTROS ROUTERS
+// Otros routers 
 app.use("/", indexRouter);
 app.use("/users", usersRouter); 
 app.use("/admin", adminRouter);
 app.use("/aboutus", aboutusRouter);
 
-// ERRORES
+// Manejo de errores 
 app.use((err, req, res, next) => {
   console.error("Error en el servidor:", err.message);
   res.status(500).json({ error: "Error interno en el servidor" });
 });
 
-// SERVIDOR 
+// Servidor 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en el puerto ${PORT}!`);
